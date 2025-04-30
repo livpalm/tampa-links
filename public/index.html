@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tampa's Links</title>
+    <!-- Add favicon to suppress 404 error -->
+    <link rel="icon" href="data:,">
     <style>
         :root {
             --primary-color: #0066cc;
@@ -381,9 +383,9 @@
             }
         }
     </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
     <!-- Announcement Banner -->
@@ -475,11 +477,6 @@
     </div>
 
     <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co'; // Replace with your Supabase URL
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q'; // Replace with your Supabase API key
-        const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
-
         // All contacts data
         const contacts = [
             {name: "AD Gonzalez", title: "President, CFO", org: "Pooltroopers", email: "adgonzalez@pooltroopers.com", phone: "+12487192631", category: "Senior/Office Staff"},
@@ -560,6 +557,9 @@
         // Track whether a valid PIN has been entered
         let isValidPinEntered = false;
 
+        // Initialize Supabase client (will be defined inside DOMContentLoaded)
+        let supabase;
+
         // Function to fetch custom links from Supabase
         async function fetchCustomLinks() {
             try {
@@ -569,7 +569,7 @@
                 if (error) throw error;
                 return data || [];
             } catch (error) {
-                console.error('Error fetching links:', error);
+                console.error('Error fetching custom links:', error.message);
                 return [];
             }
         }
@@ -582,8 +582,8 @@
                     .insert([link]);
                 if (error) throw error;
             } catch (error) {
-                console.error('Error saving link:', error);
-                alert('Failed to save the new link. Please try again.');
+                console.error('Error saving custom link:', error.message);
+                alert('Failed to save the new link: ' + error.message);
             }
         }
 
@@ -596,8 +596,8 @@
                     .eq('id', linkId);
                 if (error) throw error;
             } catch (error) {
-                console.error('Error deleting link:', error);
-                alert('Failed to delete the link. Please try again.');
+                console.error('Error deleting custom link:', error.message);
+                alert('Failed to delete the link: ' + error.message);
             }
         }
 
@@ -782,7 +782,7 @@
                 if (error) throw error;
                 return data[0] || null;
             } catch (error) {
-                console.error('Error fetching announcement:', error);
+                console.error('Error fetching announcement:', error.message);
                 return null;
             }
         }
@@ -805,40 +805,53 @@
             }
         });
 
-        // Post a new announcement
-        document.getElementById('post-announcement').addEventListener('click', async () => {
-            const message = document.getElementById('announcement-message').value.trim();
-            if (message) {
-                try {
-                    const { error } = await supabase
-                        .from('announcements')
-                        .insert([{ message }]);
-                    if (error) throw error;
-                    document.getElementById('announcement-message').value = '';
-                    alert('Announcement posted successfully.');
-                } catch (error) {
-                    console.error('Error posting announcement:', error);
-                    alert('Failed to post announcement. Please try again.');
-                }
-            } else {
-                alert('Please enter a message.');
-            }
-        });
-
-        // Real-time subscription for new announcements
-        supabase
-            .channel('announcements')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
-                const newAnnouncement = payload.new;
-                if (newAnnouncement.is_active) {
-                    showAnnouncement(newAnnouncement.message, newAnnouncement.id);
-                    announcementBanner.setAttribute('data-id', newAnnouncement.id);
-                }
-            })
-            .subscribe();
-
         // Initialize page and attach event listeners
         document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Supabase client with error handling
+            try {
+                const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
+                supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+                console.log('Supabase client initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize Supabase client:', error.message);
+                alert('Failed to connect to the database. Please try again later.');
+                return; // Stop further execution if Supabase fails to initialize
+            }
+
+            // Post a new announcement
+            document.getElementById('post-announcement').addEventListener('click', async () => {
+                console.log('Post announcement button clicked'); // Debug log
+                const message = document.getElementById('announcement-message').value.trim();
+                if (message) {
+                    try {
+                        const { error } = await supabase
+                            .from('announcements')
+                            .insert([{ message }]);
+                        if (error) throw error;
+                        document.getElementById('announcement-message').value = '';
+                        alert('Announcement posted successfully.');
+                    } catch (error) {
+                        console.error('Error posting announcement:', error.message);
+                        alert('Failed to post announcement: ' + error.message);
+                    }
+                } else {
+                    alert('Please enter a message.');
+                }
+            });
+
+            // Real-time subscription for new announcements
+            supabase
+                .channel('announcements')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
+                    const newAnnouncement = payload.new;
+                    if (newAnnouncement.is_active) {
+                        showAnnouncement(newAnnouncement.message, newAnnouncement.id);
+                        announcementBanner.setAttribute('data-id', newAnnouncement.id);
+                    }
+                })
+                .subscribe();
+
             // Fetch custom links on page load
             customLinks = await fetchCustomLinks();
             renderCustomLinks();
@@ -862,6 +875,7 @@
             });
 
             document.getElementById('submit-pin').addEventListener('click', function() {
+                console.log('Submit PIN button clicked'); // Debug log
                 const pin = document.getElementById('pin-input').value;
                 const pinHash = md5(pin);
                 if (validPinHashes.includes(pinHash) || validPins.includes(pin)) {
@@ -890,6 +904,7 @@
 
             // Add new link functionality
             document.getElementById('add-link').addEventListener('click', async function() {
+                console.log('Add link button clicked'); // Debug log
                 const title = document.getElementById('new-link-title').value.trim();
                 const url = document.getElementById('new-link-url').value.trim();
                 const type = document.getElementById('new-link-type').value;
