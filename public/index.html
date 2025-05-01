@@ -15,15 +15,16 @@
             --text-color: #333333;
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --banner-bg: #ffcc00;
+            --banner-height: 50px; /* Define the height of the banner */
         }
-
+    
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+    
         body {
             background-color: var(--background-color);
             color: var(--text-color);
@@ -32,12 +33,13 @@
             max-width: 100%;
             overflow-x: hidden;
         }
-
+    
         .container {
             max-width: 600px;
             margin: 0 auto;
+            padding-top: var(--banner-height); /* Ensure content starts below the banner */
         }
-
+    
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -47,12 +49,12 @@
             border-radius: 15px;
             box-shadow: var(--shadow);
         }
-
+    
         h1 {
             font-size: 2.2rem;
             margin-bottom: 10px;
         }
-
+    
         .logo {
             width: 120px;
             height: 120px;
@@ -62,12 +64,10 @@
             justify-content: center;
             align-items: center;
             margin: 0 auto 15px;
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            font-weight: bold;
             box-shadow: var(--shadow);
+            object-fit: contain; /* Ensure SVG scales properly */
         }
-
+    
         .card {
             background-color: var(--card-bg);
             border-radius: 10px;
@@ -76,11 +76,11 @@
             box-shadow: var(--shadow);
             transition: transform 0.3s ease;
         }
-
+    
         .card:hover {
             transform: translateY(-5px);
         }
-
+    
         .card-title {
             font-size: 1.3rem;
             color: var(--primary-color);
@@ -88,12 +88,12 @@
             display: flex;
             align-items: center;
         }
-
+    
         .card-title i {
             margin-right: 10px;
             font-size: 1.5rem;
         }
-
+    
         .link-button {
             display: block;
             background-color: var(--primary-color);
@@ -109,18 +109,18 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: var(--shadow);
         }
-
+    
         .link-button:hover {
             background-color: var(--secondary-color);
             transform: scale(1.02);
         }
-
+    
         .pin-section {
             margin-top: 15px;
             padding: 15px;
             border-top: 1px solid #ddd;
         }
-
+    
         .pin-input {
             width: 100%;
             padding: 10px;
@@ -131,20 +131,20 @@
             font-size: 1.2rem;
             letter-spacing: 3px;
         }
-
+    
         .pin-input:focus {
             border-color: var(--accent-color);
             outline: none;
         }
-
+    
         .hidden {
             display: none;
         }
-
+    
         .protected-links {
             margin-top: 15px;
         }
-
+    
         #contacts-page {
             display: none;
             position: absolute;
@@ -157,7 +157,7 @@
             overflow-y: auto;
             z-index: 100;
         }
-
+    
         .contact-card {
             background-color: var(--card-bg);
             border-radius: 10px;
@@ -165,26 +165,26 @@
             margin-bottom: 15px;
             box-shadow: var(--shadow);
         }
-
+    
         .contact-name {
             font-weight: bold;
             font-size: 1.1rem;
             color: var(--primary-color);
         }
-
+    
         .contact-title {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 10px;
         }
-
+    
         .contact-links {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 8px;
         }
-
+    
         .phone-button, .email-button {
             padding: 8px 12px;
             border-radius: 5px;
@@ -193,17 +193,17 @@
             display: flex;
             align-items: center;
         }
-
+    
         .phone-button {
             background-color: #4CAF50;
             color: white;
         }
-
+    
         .email-button {
             background-color: #2196F3;
             color: white;
         }
-
+    
         .contact-filter {
             padding: 10px;
             margin-bottom: 15px;
@@ -211,7 +211,7 @@
             border: 2px solid #ddd;
             border-radius: 5px;
         }
-
+    
         .back-button {
             display: inline-block;
             background-color: var(--primary-color);
@@ -223,7 +223,7 @@
             text-align: center;
             font-weight: 500;
         }
-
+    
         .contact-category {
             background-color: #f1f1f1;
             padding: 8px 12px;
@@ -233,7 +233,7 @@
             display: inline-block;
             margin-bottom: 5px;
         }
-
+    
         .text-button, .call-button {
             padding: 6px 10px;
             border-radius: 5px;
@@ -242,28 +242,28 @@
             margin-right: 5px;
             color: white;
         }
-
+    
         .text-button {
             background-color: #9C27B0;
         }
-
+    
         .call-button {
             background-color: #E91E63;
         }
-
+    
         .loading {
             text-align: center;
             padding: 20px;
             font-size: 1.2rem;
             color: var(--primary-color);
         }
-
+    
         .link-manager-section {
             margin-top: 20px;
             padding: 15px;
             border-top: 1px solid #ddd;
         }
-
+    
         .link-manager-section input,
         .link-manager-section select,
         .link-manager-section textarea {
@@ -274,11 +274,11 @@
             border-radius: 5px;
             font-size: 1rem;
         }
-
+    
         .link-manager-section select {
             width: 100%;
         }
-
+    
         .link-manager-section button {
             background-color: var(--primary-color);
             color: white;
@@ -290,32 +290,32 @@
             margin-top: 10px;
             margin-right: 10px;
         }
-
+    
         .link-manager-section button:hover {
             background-color: var(--secondary-color);
         }
-
+    
         .link-manager-section .close-button {
             background-color: #e91e63;
         }
-
+    
         .link-manager-section .close-button:hover {
             background-color: #c2185b;
         }
-
+    
         .custom-link {
             display: flex;
             align-items: center;
             margin: 10px 0;
             gap: 10px;
         }
-
+    
         .custom-link .link-button {
             flex-grow: 1;
             flex-shrink: 1;
             margin: 0;
         }
-
+    
         .delete-button {
             background-color: #e91e63;
             color: white;
@@ -326,11 +326,11 @@
             font-size: 0.9rem;
             flex-shrink: 0;
         }
-
+    
         .delete-button:hover {
             background-color: #c2185b;
         }
-
+    
         #announcement-banner {
             position: fixed;
             top: 0;
@@ -344,20 +344,22 @@
             align-items: center;
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: var(--banner-height); /* Set a fixed height */
+            line-height: normal; /* Ensure content aligns properly */
         }
-
+    
         #announcement-banner .close-btn {
             cursor: pointer;
             font-size: 1.2rem;
             font-weight: bold;
         }
-
+    
         #announcement-banner .message {
             flex-grow: 1;
             text-align: center;
             font-size: 1.1rem;
         }
-
+    
         @media (max-width: 480px) {
             h1 { font-size: 1.8rem; }
             .card-title { font-size: 1.1rem; }
@@ -377,7 +379,7 @@
     </div>
     <div class="container" id="main-page">
         <header>
-            <div class="logo">PT</div>
+            <img src="https://pooltroopers.com/wp-content/uploads/2025/01/PoolTroopers-LogoSVG-Retina-1.svg" class="logo" alt="PoolTroopers Logo">
             <h1>Tampa's Links</h1>
         </header>
         <div class="card">
@@ -514,7 +516,7 @@
         // Track whether a valid PIN has been entered
         let isValidPinEntered = false;
 
-        // Initialize Supabase client (will be defined inside DOMContentLoaded)
+        // Initialize Supabase client
         let supabase = null;
 
         // Function to fetch custom links from Supabase
@@ -528,6 +530,7 @@
                     .from('custom_links')
                     .select('*');
                 if (error) throw error;
+                console.log('Fetched custom links:', data);
                 return data || [];
             } catch (error) {
                 console.error('Error fetching custom links:', error.message);
@@ -546,6 +549,7 @@
                     .from('custom_links')
                     .insert([link]);
                 if (error) throw error;
+                console.log('Custom link saved successfully');
             } catch (error) {
                 console.error('Error saving custom link:', error.message);
                 alert('Failed to save the new link: ' + error.message);
@@ -556,7 +560,8 @@
         async function deleteCustomLink(linkId) {
             if (!supabase) {
                 console.error('Cannot delete custom link: Supabase client is not initialized');
-                return;
+                alert('Cannot delete link: Database connection is unavailable.');
+                return false;
             }
             try {
                 const { error } = await supabase
@@ -564,9 +569,12 @@
                     .delete()
                     .eq('id', linkId);
                 if (error) throw error;
+                console.log(`Custom link with ID ${linkId} deleted successfully`);
+                return true;
             } catch (error) {
                 console.error('Error deleting custom link:', error.message);
                 alert('Failed to delete the link: ' + error.message);
+                return false;
             }
         }
 
@@ -574,9 +582,17 @@
         function renderCustomLinks() {
             const techContainer = document.getElementById('quick-links-custom-tech');
             const managerContainer = document.getElementById('quick-links-custom-manager');
+            if (!techContainer || !managerContainer) {
+                console.error('Custom links containers not found in DOM');
+                return;
+            }
             techContainer.innerHTML = '';
             managerContainer.innerHTML = '';
-
+            console.log('renderCustomLinks called with customLinks:', customLinks);
+            if (!Array.isArray(customLinks) || customLinks.length === 0) {
+                console.warn('No custom links to render');
+                return;
+            }
             customLinks.forEach((link, index) => {
                 const linkElement = document.createElement('div');
                 linkElement.className = 'custom-link';
@@ -588,32 +604,29 @@
                 linkButton.textContent = link.title;
                 linkElement.appendChild(linkButton);
 
-                // Add delete button only if PIN 0230 is entered
                 if (isPin0230Entered) {
                     const deleteButton = document.createElement('button');
                     deleteButton.className = 'delete-button';
                     deleteButton.textContent = 'Delete';
                     deleteButton.onclick = async () => {
-                        await deleteCustomLink(link.id);
-                        customLinks = await fetchCustomLinks();
-                        renderCustomLinks();
+                        const success = await deleteCustomLink(link.id);
+                        if (success) {
+                            customLinks = await fetchCustomLinks();
+                            renderCustomLinks();
+                        }
                     };
                     linkElement.appendChild(deleteButton);
                 }
 
                 if (link.type === 'tech') {
                     techContainer.appendChild(linkElement);
+                    console.log(`Rendered tech link: ${link.title}`);
                 } else if (link.type === 'manager' && isValidPinEntered) {
                     managerContainer.appendChild(linkElement);
+                    console.log(`Rendered manager link: ${link.title}`);
                 }
             });
-
-            // Show/hide manager links container based on valid PIN
-            if (isValidPinEntered) {
-                managerContainer.classList.remove('hidden');
-            } else {
-                managerContainer.classList.add('hidden');
-            }
+            console.log('Custom links rendering completed');
         }
 
         // Function to create contact cards
@@ -631,17 +644,14 @@
             titleEl.textContent = `${contact.title} - ${contact.org}`;
             card.appendChild(titleEl);
 
-            // Add category tags
             const categoryEl = document.createElement('div');
             categoryEl.className = 'contact-category';
             categoryEl.textContent = contact.category;
             card.appendChild(categoryEl);
 
-            // Add contact links
             const contactLinks = document.createElement('div');
             contactLinks.className = 'contact-links';
 
-            // Phone numbers
             if (contact.phone) {
                 const phoneNumber = contact.phone.replace(/[^0-9+]/g, '');
                 if (phoneNumber.length >= 10) {
@@ -661,7 +671,6 @@
                 }
             }
 
-            // Email if available
             if (contact.email) {
                 const emailBtn = document.createElement('a');
                 emailBtn.href = `mailto:${contact.email}`;
@@ -688,7 +697,6 @@
                     return;
                 }
 
-                // Sort contacts by category then by name, with defensive checks
                 contactsList.sort((a, b) => {
                     const categoryA = a.category || '';
                     const categoryB = b.category || '';
@@ -736,8 +744,8 @@
 
         // Announcement-related functions
         const announcementBanner = document.getElementById('announcement-banner');
-        const announcementMessage = announcementBanner.querySelector('.message');
-        const closeBtn = announcementBanner.querySelector('.close-btn');
+        const announcementMessage = announcementBanner?.querySelector('.message');
+        const closeBtn = announcementBanner?.querySelector('.close-btn');
 
         // Fetch the latest active announcement
         async function fetchLatestAnnouncement() {
@@ -753,6 +761,7 @@
                     .order('created_at', { ascending: false })
                     .limit(1);
                 if (error) throw error;
+                console.log('Fetched latest announcement:', data);
                 return data[0] || null;
             } catch (error) {
                 console.error('Error fetching announcement:', error.message);
@@ -760,104 +769,149 @@
             }
         }
 
-        // Show the announcement banner
-        function showAnnouncement(message, id) {
-            const dismissedId = localStorage.getItem('dismissedAnnouncementId');
-            if (dismissedId !== id.toString()) {
-                announcementMessage.textContent = message;
-                announcementBanner.classList.remove('hidden');
-            }
-        }
-
-        // Dismiss the announcement
-        closeBtn.addEventListener('click', () => {
-            const currentAnnouncementId = announcementBanner.getAttribute('data-id');
-            if (currentAnnouncementId) {
-                localStorage.setItem('dismissedAnnouncementId', currentAnnouncementId);
-                announcementBanner.classList.add('hidden');
-            }
-        });
-
-// Initialize page and attach event listeners
-document.addEventListener('DOMContentLoaded', async function() {
-    // Initialize Supabase client with error handling
-    try {
-        console.log('Attempting to initialize Supabase client');
-
-        // Check if the Supabase library is loaded
-        if (typeof window.supabase === 'undefined') {
-            throw new Error('Supabase library is not loaded');
-        }
-
-        const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
-        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-        console.log('Supabase client initialized successfully:', supabase);
-    } catch (error) {
-        console.error('Failed to initialize Supabase client:', error.message, error.stack);
-        supabase = null; // Explicitly set to null to avoid undefined issues
-        alert('Failed to connect to the database. Some features may be unavailable.');
-    }
-
-    // Post a new announcement
-    document.getElementById('post-announcement').addEventListener('click', async () => {
-        console.log('Post announcement button clicked'); // Debug log
-        const message = document.getElementById('announcement-message').value.trim();
-        if (message) {
+        // Function to delete an announcement from Supabase
+        async function deleteAnnouncement(announcementId) {
             if (!supabase) {
-                console.error('Cannot post announcement: Supabase client is not initialized');
-                alert('Failed to post announcement: Database connection is not available.');
-                return;
+                console.error('Cannot delete announcement: Supabase client is not initialized');
+                alert('Cannot delete announcement: Database connection is unavailable.');
+                return false;
             }
             try {
                 const { error } = await supabase
                     .from('announcements')
-                    .insert([{ message }]);
+                    .delete()
+                    .eq('id', announcementId);
                 if (error) throw error;
-                document.getElementById('announcement-message').value = '';
-                alert('Announcement posted successfully.');
+                console.log(`Announcement with ID ${announcementId} deleted successfully`);
+                return true;
             } catch (error) {
-                console.error('Error posting announcement:', error.message, error.stack);
-                alert('Failed to post announcement: ' + error.message);
+                console.error('Error deleting announcement:', error.message);
+                alert('Failed to delete the announcement: ' + error.message);
+                return false;
             }
-        } else {
-            alert('Please enter a message.');
         }
-    });
 
-            // Real-time subscription for new announcements
+        // Show the announcement banner
+        function showAnnouncement(message, id) {
+            if (!announcementBanner || !announcementMessage) {
+                console.error('Announcement banner or message element not found in DOM');
+                return;
+            }
+            console.log('showAnnouncement called with:', { message, id });
+            const dismissedId = localStorage.getItem('dismissedAnnouncementId');
+            if (dismissedId !== id.toString()) {
+                announcementMessage.textContent = message || 'No message content';
+                announcementBanner.setAttribute('data-id', id);
+
+                // Add delete button if admin PIN is entered
+                let deleteBtn = announcementBanner.querySelector('.delete-btn');
+                if (!deleteBtn) {
+                    deleteBtn = document.createElement('span');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.marginLeft = '10px';
+                    deleteBtn.style.color = '#e91e63';
+                    deleteBtn.style.fontWeight = 'bold';
+                    announcementBanner.appendChild(deleteBtn);
+                }
+                deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
+                deleteBtn.onclick = async () => {
+                    const success = await deleteAnnouncement(id);
+                    if (success) {
+                        announcementBanner.classList.add('hidden');
+                        const latestAnnouncement = await fetchLatestAnnouncement();
+                        if (latestAnnouncement) {
+                            showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                        }
+                    }
+                };
+
+                announcementBanner.classList.remove('hidden');
+                console.log('Announcement displayed:', message);
+            } else {
+                console.log('Announcement skipped (already dismissed):', id);
+            }
+        }
+
+        // Dismiss the announcement
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                const currentAnnouncementId = announcementBanner.getAttribute('data-id');
+                if (currentAnnouncementId) {
+                    localStorage.setItem('dismissedAnnouncementId', currentAnnouncementId);
+                    announcementBanner.classList.add('hidden');
+                    console.log('Announcement dismissed:', currentAnnouncementId);
+                }
+            });
+        }
+
+        // Initialize page and attach event listeners
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Supabase client
+            try {
+                console.log('Initializing Supabase client');
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error('Supabase library not loaded');
+                }
+                const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
+                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                console.log('Supabase client initialized');
+            } catch (error) {
+                console.error('Supabase initialization failed:', error.message);
+                supabase = null;
+                alert('Database connection failed. Some features may not work.');
+            }
+
+            // Fetch and render data
+            if (supabase) {
+                customLinks = await fetchCustomLinks();
+                renderCustomLinks();
+
+                const latestAnnouncement = await fetchLatestAnnouncement();
+                if (latestAnnouncement) {
+                    showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                }
+            }
+
+            // Post a new announcement
+            document.getElementById('post-announcement').addEventListener('click', async () => {
+                console.log('Posting new announcement');
+                const message = document.getElementById('announcement-message').value.trim();
+                if (message && supabase) {
+                    try {
+                        const { error } = await supabase
+                            .from('announcements')
+                            .insert([{ message, is_active: true }]);
+                        if (error) throw error;
+                        console.log('Announcement posted');
+                        document.getElementById('announcement-message').value = '';
+                        const latestAnnouncement = await fetchLatestAnnouncement();
+                        if (latestAnnouncement) {
+                            showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                        }
+                    } catch (error) {
+                        console.error('Error posting announcement:', error.message);
+                        alert('Failed to post announcement: ' + error.message);
+                    }
+                } else {
+                    alert('Please enter a message or check database connection.');
+                }
+            });
+
+            // Real-time subscription for announcements
             if (supabase) {
                 supabase
                     .channel('announcements')
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
+                        console.log('Real-time announcement received:', payload.new);
                         const newAnnouncement = payload.new;
                         if (newAnnouncement.is_active) {
                             showAnnouncement(newAnnouncement.message, newAnnouncement.id);
-                            announcementBanner.setAttribute('data-id', newAnnouncement.id);
                         }
                     })
                     .subscribe();
-            } else {
-                console.warn('Skipping Supabase real-time subscription: Supabase client is not initialized');
-            }
-
-            // Fetch custom links on page load
-            if (supabase) {
-                customLinks = await fetchCustomLinks();
-                renderCustomLinks();
-            } else {
-                console.warn('Skipping fetch custom links: Supabase client is not initialized');
-            }
-
-            // Fetch and display the latest announcement
-            if (supabase) {
-                const latestAnnouncement = await fetchLatestAnnouncement();
-                if (latestAnnouncement) {
-                    showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                    announcementBanner.setAttribute('data-id', latestAnnouncement.id);
-                }
-            } else {
-                console.warn('Skipping fetch latest announcement: Supabase client is not initialized');
             }
 
             // PIN functionality
@@ -872,7 +926,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
 
             document.getElementById('submit-pin').addEventListener('click', function() {
-                console.log('Submit PIN button clicked'); // Debug log
+                console.log('PIN submitted');
                 const pin = document.getElementById('pin-input').value;
                 const pinHash = md5(pin);
                 if (validPinHashes.includes(pinHash) || validPins.includes(pin)) {
@@ -880,13 +934,14 @@ document.addEventListener('DOMContentLoaded', async function() {
                     document.getElementById('pin-error').classList.add('hidden');
                     isValidPinEntered = true;
                     isPin0230Entered = (pin === '0230');
-                    renderCustomLinks(); // Re-render to show manager links and delete buttons if PIN 0230
-
-                    // Show link manager section only for PIN 0230
+                    renderCustomLinks();
                     if (pin === '0230') {
                         document.getElementById('link-manager').classList.remove('hidden');
-                    } else {
-                        document.getElementById('link-manager').classList.add('hidden');
+                        // Update announcement delete button visibility
+                        const deleteBtn = announcementBanner?.querySelector('.delete-btn');
+                        if (deleteBtn) {
+                            deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
+                        }
                     }
                 } else {
                     document.getElementById('pin-error').classList.remove('hidden');
@@ -895,19 +950,22 @@ document.addEventListener('DOMContentLoaded', async function() {
                     isValidPinEntered = false;
                     isPin0230Entered = false;
                     document.getElementById('pin-input').value = '';
-                    renderCustomLinks(); // Re-render to hide manager links and delete buttons
+                    renderCustomLinks();
+                    // Hide announcement delete button if PIN is invalid
+                    const deleteBtn = announcementBanner?.querySelector('.delete-btn');
+                    if (deleteBtn) {
+                        deleteBtn.style.display = 'none';
+                    }
                 }
             });
 
-            // Add new link functionality
+            // Add new link
             document.getElementById('add-link').addEventListener('click', async function() {
-                console.log('Add link button clicked'); // Debug log
+                console.log('Adding new link');
                 const title = document.getElementById('new-link-title').value.trim();
                 const url = document.getElementById('new-link-url').value.trim();
                 const type = document.getElementById('new-link-type').value;
-
                 if (title && url) {
-                    // Prevent adding a link titled "Google"
                     if (title.toLowerCase() === 'google') {
                         alert('A link titled "Google" cannot be added.');
                         return;
@@ -923,19 +981,23 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             });
 
-            // Close link manager functionality
+            // Close link manager
             document.getElementById('close-link-manager').addEventListener('click', function() {
                 document.getElementById('link-manager').classList.add('hidden');
                 document.getElementById('new-link-title').value = '';
                 document.getElementById('new-link-url').value = '';
                 document.getElementById('announcement-message').value = '';
-                isPin0230Entered = false; // Reset PIN 0230 state to hide delete buttons
-                renderCustomLinks(); // Re-render to hide delete buttons
+                isPin0230Entered = false;
+                renderCustomLinks();
+                // Hide announcement delete button when closing link manager
+                const deleteBtn = announcementBanner?.querySelector('.delete-btn');
+                if (deleteBtn) {
+                    deleteBtn.style.display = 'none';
+                }
             });
 
             // Contacts page functionality
             document.getElementById('show-contacts').addEventListener('click', function(e) {
-                console.log('View Team Contacts clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('main-page').style.display = 'none';
                 document.getElementById('contacts-page').style.display = 'block';
@@ -943,14 +1005,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
 
             document.getElementById('back-to-main').addEventListener('click', function(e) {
-                console.log('Back to Main clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('contacts-page').style.display = 'none';
                 document.getElementById('main-page').style.display = 'block';
             });
 
             document.getElementById('close-contacts').addEventListener('click', function(e) {
-                console.log('Close Contacts clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('contacts-page').style.display = 'none';
                 document.getElementById('main-page').style.display = 'block';
@@ -966,12 +1026,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 );
                 renderContacts(filteredContacts);
             }, 300));
-
-            document.getElementById('contact-search').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    this.dispatchEvent(new Event('input'));
-                }
-            });
         });
     </script>
 </body>
