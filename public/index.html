@@ -515,10 +515,14 @@
         let isValidPinEntered = false;
 
         // Initialize Supabase client (will be defined inside DOMContentLoaded)
-        let supabase;
+        let supabase = null;
 
         // Function to fetch custom links from Supabase
         async function fetchCustomLinks() {
+            if (!supabase) {
+                console.error('Cannot fetch custom links: Supabase client is not initialized');
+                return [];
+            }
             try {
                 const { data, error } = await supabase
                     .from('custom_links')
@@ -533,6 +537,10 @@
 
         // Function to save a new custom link to Supabase
         async function saveCustomLink(link) {
+            if (!supabase) {
+                console.error('Cannot save custom link: Supabase client is not initialized');
+                return;
+            }
             try {
                 const { error } = await supabase
                     .from('custom_links')
@@ -546,6 +554,10 @@
 
         // Function to delete a custom link from Supabase
         async function deleteCustomLink(linkId) {
+            if (!supabase) {
+                console.error('Cannot delete custom link: Supabase client is not initialized');
+                return;
+            }
             try {
                 const { error } = await supabase
                     .from('custom_links')
@@ -729,6 +741,10 @@
 
         // Fetch the latest active announcement
         async function fetchLatestAnnouncement() {
+            if (!supabase) {
+                console.error('Cannot fetch announcement: Supabase client is not initialized');
+                return null;
+            }
             try {
                 const { data, error } = await supabase
                     .from('announcements')
@@ -766,14 +782,15 @@
         document.addEventListener('DOMContentLoaded', async function() {
             // Initialize Supabase client with error handling
             try {
+                console.log('Attempting to initialize Supabase client');
                 const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
                 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
                 supabase = Supabase.createClient(supabaseUrl, supabaseKey);
-                console.log('Supabase client initialized successfully');
+                console.log('Supabase client initialized successfully:', supabase);
             } catch (error) {
-                console.error('Failed to initialize Supabase client:', error.message);
+                console.error('Failed to initialize Supabase client:', error.message, error.stack);
+                supabase = null; // Explicitly set to null to avoid undefined issues
                 alert('Failed to connect to the database. Some features may be unavailable.');
-                // Continue execution instead of returning
             }
 
             // Post a new announcement
@@ -781,6 +798,11 @@
                 console.log('Post announcement button clicked'); // Debug log
                 const message = document.getElementById('announcement-message').value.trim();
                 if (message) {
+                    if (!supabase) {
+                        console.error('Cannot post announcement: Supabase client is not initialized');
+                        alert('Failed to post announcement: Database connection is not available.');
+                        return;
+                    }
                     try {
                         const { error } = await supabase
                             .from('announcements')
@@ -789,7 +811,7 @@
                         document.getElementById('announcement-message').value = '';
                         alert('Announcement posted successfully.');
                     } catch (error) {
-                        console.error('Error posting announcement:', error.message);
+                        console.error('Error posting announcement:', error.message, error.stack);
                         alert('Failed to post announcement: ' + error.message);
                     }
                 } else {
@@ -809,12 +831,16 @@
                         }
                     })
                     .subscribe();
+            } else {
+                console.warn('Skipping Supabase real-time subscription: Supabase client is not initialized');
             }
 
             // Fetch custom links on page load
             if (supabase) {
                 customLinks = await fetchCustomLinks();
                 renderCustomLinks();
+            } else {
+                console.warn('Skipping fetch custom links: Supabase client is not initialized');
             }
 
             // Fetch and display the latest announcement
@@ -824,6 +850,8 @@
                     showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
                     announcementBanner.setAttribute('data-id', latestAnnouncement.id);
                 }
+            } else {
+                console.warn('Skipping fetch latest announcement: Supabase client is not initialized');
             }
 
             // PIN functionality
