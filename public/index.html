@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tampa's Links</title>
-    <!-- Add favicon to suppress 404 error -->
     <link rel="icon" href="data:,">
     <style>
         :root {
@@ -15,7 +14,7 @@
             --card-bg: #ffffff;
             --text-color: #333333;
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --banner-bg: #ffcc00; /* Color for announcement banner */
+            --banner-bg: #ffcc00;
         }
 
         * {
@@ -332,7 +331,6 @@
             background-color: #c2185b;
         }
 
-        /* Announcement Banner Styles */
         #announcement-banner {
             position: fixed;
             top: 0;
@@ -361,26 +359,11 @@
         }
 
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .card-title {
-                font-size: 1.1rem;
-            }
-
-            .link-button {
-                padding: 12px;
-                font-size: 1rem;
-            }
-
-            #announcement-banner {
-                padding: 8px 15px;
-            }
-
-            #announcement-banner .message {
-                font-size: 1rem;
-            }
+            h1 { font-size: 1.8rem; }
+            .card-title { font-size: 1.1rem; }
+            .link-button { padding: 12px; font-size: 1rem; }
+            #announcement-banner { padding: 8px 15px; }
+            #announcement-banner .message { font-size: 1rem; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -388,91 +371,65 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-    <!-- Announcement Banner -->
     <div id="announcement-banner" class="hidden">
         <span class="message"></span>
         <span class="close-btn">×</span>
     </div>
-
-    <!-- Main page with links -->
     <div class="container" id="main-page">
         <header>
             <div class="logo">PT</div>
             <h1>Tampa's Links</h1>
         </header>
-
         <div class="card">
-            <div class="card-title">
-                <i class="fas fa-users" aria-hidden="true"></i>Tampa Team Contacts
-            </div>
+            <div class="card-title"><i class="fas fa-users"></i>Tampa Team Contacts</div>
             <a href="#contacts" class="link-button" id="show-contacts">View Team Contacts</a>
         </div>
-
         <div class="card">
-            <div class="card-title">
-                <i class="fas fa-link" aria-hidden="true"></i>Quick Links
-            </div>
+            <div class="card-title"><i class="fas fa-link"></i>Quick Links</div>
             <div id="quick-links-public">
                 <a href="https://drive.google.com/file/d/1TfuCapuk8uFtx4p1lYpK48ARtwWoqMXZ/view?usp=sharing" class="link-button" target="_blank">Mobiletech 35.1v</a>
                 <a href="https://form.jotform.com/242183915728160" class="link-button" target="_blank">Weekly Truck Inspection</a>
             </div>
-            <div id="quick-links-custom-tech">
-                <!-- Custom Tech Links will be populated here -->
-            </div>
+            <div id="quick-links-custom-tech"></div>
         </div>
-
         <div class="card">
-            <div class="card-title">
-                <i class="fas fa-lock" aria-hidden="true"></i>Area Manager Section
-            </div>
+            <div class="card-title"><i class="fas fa-lock"></i>Area Manager Section</div>
             <div class="pin-section">
                 <label for="pin-input">Area Manager PIN:</label>
                 <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="Enter 4-digit PIN">
-                <button id="submit-pin" class="link-button" role="button" aria-label="Submit PIN">Submit</button>
-                
+                <button id="submit-pin" class="link-button">Submit</button>
                 <div id="protected-content" class="protected-links hidden">
                     <a href="https://form.jotform.com/250336149850154" class="link-button" target="_blank">Pool Physicals</a>
                     <a href="https://app.jotform.com/240716802997163" class="link-button" target="_blank">Residential Quality Control Form</a>
                     <a href="https://smsgenerator.netlify.app/" class="link-button" target="_blank">SMS Generator</a>
                     <a href="https://form.jotform.com/250703894036054" class="link-button" target="_blank">Tablet Feeder Distribution</a>
-                    <div id="quick-links-custom-manager">
-                        <!-- Custom Manager Links will be populated here -->
-                    </div>
+                    <div id="quick-links-custom-manager"></div>
                 </div>
-                <div id="pin-error" class="hidden" style="color: red; margin-top: 10px;">
-                    Incorrect PIN. Please try again.
-                </div>
+                <div id="pin-error" class="hidden" style="color: red; margin-top: 10px;">Incorrect PIN. Please try again.</div>
             </div>
-
             <div id="link-manager" class="link-manager-section hidden">
                 <h3>Add New Link</h3>
-                <input type="text" id="new-link-title" placeholder="Enter link title" aria-label="Link title">
-                <input type="url" id="new-link-url" placeholder="Enter link URL" aria-label="Link URL">
-                <select id="new-link-type" aria-label="Link type">
+                <input type="text" id="new-link-title" placeholder="Enter link title">
+                <input type="url" id="new-link-url" placeholder="Enter link URL">
+                <select id="new-link-type">
                     <option value="tech">Tech Link (Visible)</option>
                     <option value="manager">Manager Link (Hidden)</option>
                 </select>
                 <button id="add-link">Add Link</button>
-
                 <h3>Post Announcement</h3>
-                <textarea id="announcement-message" placeholder="Enter announcement message" aria-label="Announcement message"></textarea>
+                <textarea id="announcement-message" placeholder="Enter announcement message"></textarea>
                 <button id="post-announcement">Post Announcement</button>
                 <button id="close-link-manager" class="close-button">Close</button>
             </div>
         </div>
     </div>
-
-    <!-- Contacts page -->
-    <div id="contacts-page">
+    <div id="contacts-page" class="hidden">
         <div class="container">
-            <a href="#" class="back-button link-button" id="back-to-main"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Main Page</a>
-            <button class="back-button link-button" id="close-contacts" role="button" aria-label="Close contacts page">Close</button>
+            <a href="#" class="back-button link-button" id="back-to-main"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+            <button class="back-button link-button" id="close-contacts">Close</button>
             <h1>Tampa Team Contacts</h1>
-            <input type="text" id="contact-search" class="contact-filter" placeholder="Search contacts..." aria-label="Search contacts">
-            
-            <div id="contacts-container">
-                <!-- Contacts will be populated here -->
-            </div>
+            <input type="text" id="contact-search" class="contact-filter" placeholder="Search contacts...">
+            <div id="contacts-container"></div>
         </div>
     </div>
 
@@ -679,14 +636,14 @@
                     const textBtn = document.createElement('a');
                     textBtn.href = `sms:${phoneNumber}`;
                     textBtn.className = 'text-button';
-                    textBtn.innerHTML = '<i class="fas fa-comment" aria-hidden="true"></i> Text';
+                    textBtn.innerHTML = '<i class="fas fa-comment"></i> Text';
                     textBtn.setAttribute('aria-label', `Send text to ${contact.name}`);
                     contactLinks.appendChild(textBtn);
                     
                     const callBtn = document.createElement('a');
                     callBtn.href = `tel:${phoneNumber}`;
                     callBtn.className = 'call-button';
-                    callBtn.innerHTML = '<i class="fas fa-phone" aria-hidden="true"></i> Call';
+                    callBtn.innerHTML = '<i class="fas fa-phone"></i> Call';
                     callBtn.setAttribute('aria-label', `Call ${contact.name}`);
                     contactLinks.appendChild(callBtn);
                 }
@@ -697,7 +654,7 @@
                 const emailBtn = document.createElement('a');
                 emailBtn.href = `mailto:${contact.email}`;
                 emailBtn.className = 'email-button';
-                emailBtn.innerHTML = '<i class="fas fa-envelope" aria-hidden="true"></i> Email';
+                emailBtn.innerHTML = '<i class="fas fa-envelope"></i> Email';
                 emailBtn.setAttribute('aria-label', `Email ${contact.name}`);
                 contactLinks.appendChild(emailBtn);
             }
@@ -815,8 +772,8 @@
                 console.log('Supabase client initialized successfully');
             } catch (error) {
                 console.error('Failed to initialize Supabase client:', error.message);
-                alert('Failed to connect to the database. Please try again later.');
-                return; // Stop further execution if Supabase fails to initialize
+                alert('Failed to connect to the database. Some features may be unavailable.');
+                // Continue execution instead of returning
             }
 
             // Post a new announcement
@@ -841,26 +798,32 @@
             });
 
             // Real-time subscription for new announcements
-            supabase
-                .channel('announcements')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
-                    const newAnnouncement = payload.new;
-                    if (newAnnouncement.is_active) {
-                        showAnnouncement(newAnnouncement.message, newAnnouncement.id);
-                        announcementBanner.setAttribute('data-id', newAnnouncement.id);
-                    }
-                })
-                .subscribe();
+            if (supabase) {
+                supabase
+                    .channel('announcements')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
+                        const newAnnouncement = payload.new;
+                        if (newAnnouncement.is_active) {
+                            showAnnouncement(newAnnouncement.message, newAnnouncement.id);
+                            announcementBanner.setAttribute('data-id', newAnnouncement.id);
+                        }
+                    })
+                    .subscribe();
+            }
 
             // Fetch custom links on page load
-            customLinks = await fetchCustomLinks();
-            renderCustomLinks();
+            if (supabase) {
+                customLinks = await fetchCustomLinks();
+                renderCustomLinks();
+            }
 
             // Fetch and display the latest announcement
-            const latestAnnouncement = await fetchLatestAnnouncement();
-            if (latestAnnouncement) {
-                showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                announcementBanner.setAttribute('data-id', latestAnnouncement.id);
+            if (supabase) {
+                const latestAnnouncement = await fetchLatestAnnouncement();
+                if (latestAnnouncement) {
+                    showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                    announcementBanner.setAttribute('data-id', latestAnnouncement.id);
+                }
             }
 
             // PIN functionality
@@ -938,6 +901,7 @@
 
             // Contacts page functionality
             document.getElementById('show-contacts').addEventListener('click', function(e) {
+                console.log('View Team Contacts clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('main-page').style.display = 'none';
                 document.getElementById('contacts-page').style.display = 'block';
@@ -945,12 +909,14 @@
             });
 
             document.getElementById('back-to-main').addEventListener('click', function(e) {
+                console.log('Back to Main clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('contacts-page').style.display = 'none';
                 document.getElementById('main-page').style.display = 'block';
             });
 
             document.getElementById('close-contacts').addEventListener('click', function(e) {
+                console.log('Close Contacts clicked'); // Debug log
                 e.preventDefault();
                 document.getElementById('contacts-page').style.display = 'none';
                 document.getElementById('main-page').style.display = 'block';
