@@ -961,19 +961,21 @@
                         const newAnnouncement = payload.new;
                         if (newAnnouncement.is_active) {
                             showAnnouncement(newAnnouncement.message, newAnnouncement.id);
-                            // Trigger push notification via Edge Function
                             try {
-                                await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/send-push-notification', { // Replace with your Edge Function URL
+                                const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/send-push-notification', {
                                     method: 'POST',
                                     body: JSON.stringify({ record: newAnnouncement }),
                                     headers: { 'Content-Type': 'application/json' },
                                 });
+                                console.log('Edge Function response:', await response.text());
                             } catch (error) {
                                 console.error('Error triggering push notification:', error);
                             }
                         }
                     })
-                    .subscribe();
+                    .subscribe((status) => {
+                        console.log('Subscription status:', status);
+                    });
             }
 
             // Enable notifications button
