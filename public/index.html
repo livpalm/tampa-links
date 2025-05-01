@@ -783,8 +783,8 @@
             // Initialize Supabase client with error handling
             try {
                 console.log('Attempting to initialize Supabase client');
-                const supabaseUrl = 'YOUR_SUPABASE_URL';
-                const supabaseKey = 'YOUR_API_KEY';
+                const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
                 supabase = Supabase.createClient(supabaseUrl, supabaseKey);
                 console.log('Supabase client initialized successfully:', supabase);
             } catch (error) {
