@@ -963,7 +963,7 @@
                             showAnnouncement(newAnnouncement.message, newAnnouncement.id);
                             // Trigger push notification via Edge Function
                             try {
-                                await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/hyper-responder', { // Replace with your Edge Function URL
+                                await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/send-push-notification', { // Replace with your Edge Function URL
                                     method: 'POST',
                                     body: JSON.stringify({ record: newAnnouncement }),
                                     headers: { 'Content-Type': 'application/json' },
