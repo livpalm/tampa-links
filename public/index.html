@@ -375,7 +375,7 @@
 <body>
     <div id="announcement-banner" class="hidden">
         <span class="message"></span>
-        <span class="close-btn">×</span>
+        <span class="close-btn"></span>
     </div>
     <div class="container" id="main-page">
         <header>
@@ -423,6 +423,11 @@
                 <button id="post-announcement">Post Announcement</button>
                 <button id="close-link-manager" class="close-button">Close</button>
             </div>
+        </div>
+        <!-- Added Notification Card -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-bell"></i>Notifications</div>
+            <button id="enable-notifications" class="link-button">Enable Notifications</button>
         </div>
     </div>
     <div id="contacts-page" class="hidden">
@@ -475,7 +480,7 @@
             {name: "Justin Levy", title: "TECTP301", org: "Pooltroopers", phone: "+18133649730", phone2: "+18137662958", category: "Tampa Routes"},
             {name: "Kevin Alexander", title: "TECTPA04", org: "Pooltroopers", phone: "+18132307083", category: "Senior/Office Staff"},
             {name: "Lawrence Lavacca", title: "TECTP504", org: "Pooltroopers", phone: "+18133095663", category: "Tampa Routes"},
-            {name: "Ludwing Villamizar", title: "General Manager Tampa", org: "Pooltroopers", email: "lvillamizar@pooltroopers.com", phone: "+18139555576", phone2: "+18138621208", category: "General Managers"},
+            {name: "Ludwing Villamizar", title: "General Manager Tampa", org: "Pooltroopers", email: "lvillamizar@pooltroopers.com", phone: "+18139555576", phone2: "+18138621208", category: "General Manager"},
             {name: "Mackeel Rodgers", title: "TECTP403", org: "Pooltroopers", phone: "+18137663754", category: "Tampa Routes"},
             {name: "Michael Beeby", title: "TECTP201", org: "Pooltroopers", phone: "+18136253784", category: "Tampa Routes"},
             {name: "Mike Zabrocki", title: "COO", org: "Pooltroopers", email: "mzabrocki@pooltroopers.com", phone: "+18133095929", category: "Senior/Office Staff"},
@@ -518,6 +523,53 @@
 
         // Initialize Supabase client
         let supabase = null;
+
+        // Function to convert VAPID key to Uint8Array for push notifications
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const rawData = atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+
+        // Register service worker and subscribe to push notifications
+        async function setupPushNotifications() {
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js');
+                    console.log('Service Worker registered:', registration);
+
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted');
+                        const applicationServerKey = urlBase64ToUint8Array('BOcA53xE9rvF9910WzV6tGmRWo0y3fDtTF8x84I14a2zJ5T5sK9d8yguP_uDVrhpdWGXTusJ8QvJx02PHyJLbbo'); // Replace with your VAPID public key
+                        const subscription = await registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: applicationServerKey,
+                        });
+
+                        const { error } = await supabase.from('push_subscriptions').insert({
+                            subscription: JSON.stringify(subscription),
+                        });
+                        if (error) {
+                            console.error('Error storing push subscription:', error.message);
+                        } else {
+                            console.log('Push subscription stored in Supabase');
+                        }
+                    } else {
+                        console.log('Notification permission denied');
+                    }
+                } catch (error) {
+                    console.error('Error setting up push notifications:', error);
+                }
+            } else {
+                console.log('Push notifications not supported in this browser');
+            }
+        }
 
         // Function to fetch custom links from Supabase
         async function fetchCustomLinks() {
@@ -900,19 +952,32 @@
                 }
             });
 
-            // Real-time subscription for announcements
+            // Real-time subscription for announcements with push notification trigger
             if (supabase) {
                 supabase
                     .channel('announcements')
-                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, payload => {
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, async (payload) => {
                         console.log('Real-time announcement received:', payload.new);
                         const newAnnouncement = payload.new;
                         if (newAnnouncement.is_active) {
                             showAnnouncement(newAnnouncement.message, newAnnouncement.id);
+                            // Trigger push notification via Edge Function
+                            try {
+                                await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/hyper-responder', { // Replace with your Edge Function URL
+                                    method: 'POST',
+                                    body: JSON.stringify({ record: newAnnouncement }),
+                                    headers: { 'Content-Type': 'application/json' },
+                                });
+                            } catch (error) {
+                                console.error('Error triggering push notification:', error);
+                            }
                         }
                     })
                     .subscribe();
             }
+
+            // Enable notifications button
+            document.getElementById('enable-notifications').addEventListener('click', setupPushNotifications);
 
             // PIN functionality
             document.getElementById('pin-input').addEventListener('input', function() {
