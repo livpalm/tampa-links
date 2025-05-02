@@ -977,7 +977,20 @@
                         console.log('Subscription status:', status);
                     });
             }
-
+            // Real-time subscription for custom_links
+            if (supabase) {
+                supabase
+                    .channel('custom_links')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'custom_links' }, async (payload) => {
+                        console.log('Real-time custom link added:', payload.new);
+                        // Refetch and re-render custom links
+                        customLinks = await fetchCustomLinks();
+                        renderCustomLinks();
+                    })
+                    .subscribe((status) => {
+                        console.log('Custom links subscription status:', status);
+                    });
+            }
             // Enable notifications button
             document.getElementById('enable-notifications').addEventListener('click', setupPushNotifications);
 
