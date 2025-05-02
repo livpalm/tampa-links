@@ -16,6 +16,8 @@
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --banner-bg: #ffcc00;
             --banner-height: 50px; /* Define the height of the banner */
+            --banner-font-size: 1.3rem; /* Default font size for banner text */
+            --banner-font-weight: bold; /* Default font weight for banner text */
         }
     
         * {
@@ -346,6 +348,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             height: var(--banner-height); /* Set a fixed height */
             line-height: normal; /* Ensure content aligns properly */
+            font-size: var(--banner-font-size); /* Use the new font size variable */
+            font-weight: var(--banner-font-weight); /* Use the new font weight variable */
         }
     
         #announcement-banner .close-btn {
@@ -357,7 +361,8 @@
         #announcement-banner .message {
             flex-grow: 1;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: var(--banner-font-size); /* Match the banner's font size */
+            font-weight: var(--banner-font-weight); /* Match the banner's font weight */
         }
     
         @media (max-width: 480px) {
