@@ -206,12 +206,25 @@
             color: white;
         }
     
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    
         .contact-filter {
             padding: 10px;
             margin-bottom: 15px;
             width: 100%;
             border: 2px solid #ddd;
             border-radius: 5px;
+            flex-grow: 1; /* Make the input take up available space */
+        }
+    
+        #contact-search-btn {
+            padding: 10px 15px;
+            font-size: 1rem;
+            min-width: 100px; /* Ensure the button doesn’t shrink too much */
         }
     
         .back-button {
@@ -366,11 +379,39 @@
         }
     
         @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .card-title { font-size: 1.1rem; }
-            .link-button { padding: 12px; font-size: 1rem; }
-            #announcement-banner { padding: 8px 15px; }
-            #announcement-banner .message { font-size: 1rem; }
+            h1 {
+                font-size: 1.8rem;
+            }
+    
+            .card-title {
+                font-size: 1.1rem;
+            }
+    
+            .link-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+    
+            .search-bar {
+                flex-direction: column;
+                gap: 5px;
+            }
+    
+            .contact-filter {
+                width: 100%;
+            }
+    
+            #contact-search-btn {
+                width: 100%; /* Full width on small screens */
+            }
+    
+            #announcement-banner {
+                padding: 8px 15px;
+            }
+    
+            #announcement-banner .message {
+                font-size: 1rem;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -440,7 +481,10 @@
             <a href="#" class="back-button link-button" id="back-to-main"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
             <button class="back-button link-button" id="close-contacts">Close</button>
             <h1>Tampa Team Contacts</h1>
-            <input type="text" id="contact-search" class="contact-filter" placeholder="Search contacts...">
+            <div class="search-bar">
+                <input type="text" id="contact-search" class="contact-filter" placeholder="Search contacts...">
+                <button id="contact-search-btn" class="link-button">Search</button>
+            </div>
             <div id="contacts-container"></div>
         </div>
     </div>
@@ -1103,14 +1147,36 @@
 
             // Filter contacts
             document.getElementById('contact-search').addEventListener('input', debounce(function() {
-                const searchTerm = this.value.toLowerCase();
+                // Search functionality for contacts
+            const contactSearchInput = document.getElementById('contact-search');
+            const contactSearchBtn = document.getElementById('contact-search-btn');
+
+            function searchContacts() {
+                const searchTerm = contactSearchInput.value.trim().toLowerCase();
                 const filteredContacts = contacts.filter(contact => 
                     (contact.name?.toLowerCase().includes(searchTerm) || 
-                     contact.title?.toLowerCase().includes(searchTerm) ||
-                     contact.category?.toLowerCase().includes(searchTerm))
+                    contact.title?.toLowerCase().includes(searchTerm) ||
+                    contact.category?.toLowerCase().includes(searchTerm) ||
+                    contact.phone?.toLowerCase().includes(searchTerm) ||
+                    contact.email?.toLowerCase().includes(searchTerm) ||
+                    contact.phone2?.toLowerCase().includes(searchTerm) ||
+                    contact.phone3?.toLowerCase().includes(searchTerm))
                 );
                 renderContacts(filteredContacts);
-            }, 300));
+            }
+
+            // Trigger search on button click
+            contactSearchBtn.addEventListener('click', searchContacts);
+
+            // Trigger search on Enter key press
+            contactSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchContacts();
+                }
+            });
+
+            // Optional: Live search as the user types
+            contactSearchInput.addEventListener('input', debounce(searchContacts, 300));
         });
     </script>
 </body>
