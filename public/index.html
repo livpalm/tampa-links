@@ -470,7 +470,6 @@
                 <button id="close-link-manager" class="close-button">Close</button>
             </div>
         </div>
-        <!-- Added Notification Card -->
         <div class="card">
             <div class="card-title"><i class="fas fa-bell"></i>Notifications</div>
             <button id="enable-notifications" class="link-button">Enable Notifications</button>
@@ -595,7 +594,7 @@
                     const permission = await Notification.requestPermission();
                     if (permission === 'granted') {
                         console.log('Notification permission granted');
-                        const applicationServerKey = urlBase64ToUint8Array('BOcA53xE9rvF9910WzV6tGmRWo0y3fDtTF8x84I14a2zJ5T5sK9d8yguP_uDVrhpdWGXTusJ8QvJx02PHyJLbbo'); // Replace with your VAPID public key
+                        const applicationServerKey = urlBase64ToUint8Array('BOcA53xE9rvF9910WzV6tGmRWo0y3fDtTF8x84I14a2zJ5T5sK9d8yguP_uDVrhpdWGXTusJ8QvJx02PHyJLbbo');
                         const subscription = await registration.pushManager.subscribe({
                             userVisibleOnly: true,
                             applicationServerKey: applicationServerKey,
@@ -904,7 +903,6 @@
                 announcementMessage.textContent = message || 'No message content';
                 announcementBanner.setAttribute('data-id', id);
 
-                // Add delete button if admin PIN is entered
                 let deleteBtn = announcementBanner.querySelector('.delete-btn');
                 if (!deleteBtn) {
                     deleteBtn = document.createElement('span');
@@ -1026,13 +1024,13 @@
                         console.log('Subscription status:', status);
                     });
             }
+
             // Real-time subscription for custom_links
             if (supabase) {
                 supabase
                     .channel('custom_links')
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'custom_links' }, async (payload) => {
                         console.log('Real-time custom link added:', payload.new);
-                        // Refetch and re-render custom links
                         customLinks = await fetchCustomLinks();
                         renderCustomLinks();
                     })
@@ -1040,6 +1038,7 @@
                         console.log('Custom links subscription status:', status);
                     });
             }
+
             // Enable notifications button
             document.getElementById('enable-notifications').addEventListener('click', setupPushNotifications);
 
@@ -1066,7 +1065,6 @@
                     renderCustomLinks();
                     if (pin === '0230') {
                         document.getElementById('link-manager').classList.remove('hidden');
-                        // Update announcement delete button visibility
                         const deleteBtn = announcementBanner?.querySelector('.delete-btn');
                         if (deleteBtn) {
                             deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
@@ -1080,7 +1078,6 @@
                     isPin0230Entered = false;
                     document.getElementById('pin-input').value = '';
                     renderCustomLinks();
-                    // Hide announcement delete button if PIN is invalid
                     const deleteBtn = announcementBanner?.querySelector('.delete-btn');
                     if (deleteBtn) {
                         deleteBtn.style.display = 'none';
@@ -1118,7 +1115,6 @@
                 document.getElementById('announcement-message').value = '';
                 isPin0230Entered = false;
                 renderCustomLinks();
-                // Hide announcement delete button when closing link manager
                 const deleteBtn = announcementBanner?.querySelector('.delete-btn');
                 if (deleteBtn) {
                     deleteBtn.style.display = 'none';
@@ -1145,9 +1141,7 @@
                 document.getElementById('main-page').style.display = 'block';
             });
 
-            // Filter contacts
-            document.getElementById('contact-search').addEventListener('input', debounce(function() {
-                // Search functionality for contacts
+            // Search functionality for contacts
             const contactSearchInput = document.getElementById('contact-search');
             const contactSearchBtn = document.getElementById('contact-search-btn');
 
@@ -1175,7 +1169,7 @@
                 }
             });
 
-            // Optional: Live search as the user types
+            // Live search as the user types
             contactSearchInput.addEventListener('input', debounce(searchContacts, 300));
         });
     </script>
