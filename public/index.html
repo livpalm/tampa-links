@@ -440,7 +440,8 @@
             <div id="quick-links-public">
                 <a href="https://drive.google.com/file/d/1TfuCapuk8uFtx4p1lYpK48ARtwWoqMXZ/view?usp=sharing" class="link-button" target="_blank">Mobiletech 35.1v</a>
                 <a href="https://form.jotform.com/242183915728160" class="link-button" target="_blank">Weekly Truck Wash</a>
-            </div></div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-title"><i class="fas fa-lock"></i>Area Manager Section</div>
             <div class="pin-section">
@@ -506,6 +507,7 @@
         let contacts = [];
         let isPin0230Entered = false;
         let isValidPinEntered = false;
+        let currentPin = null; // Added to store the PIN
         let supabase = null;
 
         async function fetchCustomLinks() {
@@ -520,35 +522,6 @@
             }
         }
 
-        async function saveCustomLink(link) {
-            if (!supabase) return;
-            try {
-                const { error } = await supabase.from('custom_links').insert([link]);
-                if (error) throw error;
-                console.log('Custom link saved successfully');
-            } catch (error) {
-                console.error('Error saving custom link:', error.message);
-                alert('Failed to save the new link: ' + error.message);
-            }
-        }
-
-        async function deleteCustomLink(linkId) {
-            if (!supabase) {
-                alert('Cannot delete link: Database connection is unavailable.');
-                return false;
-            }
-            try {
-                const { error } = await supabase.from('custom_links').delete().eq('id', linkId);
-                if (error) throw error;
-                console.log(`Custom link with ID ${linkId} deleted successfully`);
-                return true;
-            } catch (error) {
-                console.error('Error deleting custom link:', error.message);
-                alert('Failed to delete the link: ' + error.message);
-                return false;
-            }
-        }
-
         async function fetchContacts() {
             if (!supabase) return [];
             try {
@@ -558,19 +531,6 @@
             } catch (error) {
                 console.error('Error fetching contacts:', error.message);
                 return [];
-            }
-        }
-
-        async function updateContacts(newContacts) {
-            if (!supabase) return;
-            try {
-                await supabase.from('contacts').delete().neq('id', 0);
-                const { error } = await supabase.from('contacts').insert(newContacts);
-                if (error) throw error;
-                console.log('Contacts updated successfully');
-            } catch (error) {
-                console.error('Error updating contacts:', error.message);
-                alert('Failed to update contacts: ' + error.message);
             }
         }
 
@@ -728,26 +688,6 @@
             }
         }
 
-        async function deleteAnnouncement(announcementId) {
-            if (!supabase) {
-                alert('Cannot delete announcement: Database connection is unavailable.');
-                return false;
-            }
-            try {
-                const { error } = await supabase
-                    .from('announcements')
-                    .delete()
-                    .eq('id', announcementId);
-                if (error) throw error;
-                console.log(`Announcement with ID ${announcementId} deleted successfully`);
-                return true;
-            } catch (error) {
-                console.error('Error deleting announcement:', error.message);
-                alert('Failed to delete the announcement: ' + error.message);
-                return false;
-            }
-        }
-
         function showAnnouncement(message, id) {
             if (!announcementBanner || !announcementMessage) return;
             const dismissedId = localStorage.getItem('dismissedAnnouncementId');
@@ -767,13 +707,28 @@
                 }
                 deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
                 deleteBtn.onclick = async () => {
-                    const success = await deleteAnnouncement(id);
-                    if (success) {
+                    if (!currentPin) {
+                        alert('PIN is required to delete announcements.');
+                        return;
+                    }
+                    try {
+                        const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/manage-announcements', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'delete', id, pin: currentPin })
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to delete announcement');
+                        }
+                        const data = await response.json();
+                        alert(data.message);
                         announcementBanner.classList.add('hidden');
                         const latestAnnouncement = await fetchLatestAnnouncement();
-                        if (latestAnnouncement) {
-                            showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                        }
+                        if (latestAnnouncement) showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                    } catch (error) {
+                        console.error('Error deleting announcement:', error);
+                        alert('Failed to delete announcement: ' + error.message);
                     }
                 };
                 announcementBanner.classList.remove('hidden');
@@ -812,19 +767,32 @@
 
             document.getElementById('post-announcement').addEventListener('click', async () => {
                 const message = document.getElementById('announcement-message').value.trim();
-                if (message && supabase) {
-                    try {
-                        const { error } = await supabase.from('announcements').insert([{ message, is_active: true }]);
-                        if (error) throw error;
-                        document.getElementById('announcement-message').value = '';
-                        const latestAnnouncement = await fetchLatestAnnouncement();
-                        if (latestAnnouncement) showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                    } catch (error) {
-                        console.error('Error posting announcement:', error.message);
-                        alert('Failed to post announcement: ' + error.message);
+                if (!message) {
+                    alert('Please enter a message.');
+                    return;
+                }
+                if (!currentPin) {
+                    alert('PIN is required to post announcements.');
+                    return;
+                }
+                try {
+                    const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/manage-announcements', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'post', message, pin: currentPin })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to post announcement');
                     }
-                } else {
-                    alert('Please enter a message or check database connection.');
+                    const data = await response.json();
+                    alert(data.message);
+                    document.getElementById('announcement-message').value = '';
+                    const latestAnnouncement = await fetchLatestAnnouncement();
+                    if (latestAnnouncement) showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
+                } catch (error) {
+                    console.error('Error posting announcement:', error);
+                    alert('Failed to post announcement: ' + error.message);
                 }
             });
 
@@ -839,7 +807,6 @@
                 supabase.channel('custom_links').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'custom_links' }, async () => {
                     customLinks = await fetchCustomLinks();
                     renderCustomLinks();
-                شهيدة
                 }).subscribe((status) => console.log('Custom links subscription status:', status));
             }
 
@@ -859,6 +826,7 @@
                     document.getElementById('pin-error').classList.add('hidden');
                     isValidPinEntered = true;
                     isPin0230Entered = (pin === '0230');
+                    currentPin = pin; // Store the PIN
                     renderCustomLinks();
                     if (pin === '0230') {
                         document.getElementById('link-manager').classList.remove('hidden');
@@ -871,6 +839,7 @@
                     document.getElementById('link-manager').classList.add('hidden');
                     isValidPinEntered = false;
                     isPin0230Entered = false;
+                    currentPin = null; // Clear the PIN
                     document.getElementById('pin-input').value = '';
                     renderCustomLinks();
                     const deleteBtn = announcementBanner?.querySelector('.delete-btn');
@@ -887,16 +856,59 @@
                         alert('A link titled "Google" cannot be added.');
                         return;
                     }
-                    const newLink = { title, url, type };
-                    await saveCustomLink(newLink);
-                    customLinks = await fetchCustomLinks();
-                    renderCustomLinks();
-                    document.getElementById('new-link-title').value = '';
-                    document.getElementById('new-link-url').value = '';
+                    if (!currentPin) {
+                        alert('PIN is required to add links.');
+                        return;
+                    }
+                    try {
+                        const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/manage-custom-links', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'add', link: { title, url, type }, pin: currentPin })
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to add link');
+                        }
+                        const data = await response.json();
+                        alert(data.message);
+                        customLinks = await fetchCustomLinks();
+                        renderCustomLinks();
+                        document.getElementById('new-link-title').value = '';
+                        document.getElementById('new-link-url').value = '';
+                    } catch (error) {
+                        console.error('Error adding link:', error);
+                        alert('Failed to add link: ' + error.message);
+                    }
                 } else {
                     alert('Please enter both a title and a URL.');
                 }
             });
+
+            async function deleteCustomLink(linkId) {
+                if (!currentPin) {
+                    alert('PIN is required to delete links.');
+                    return false;
+                }
+                try {
+                    const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/manage-custom-links', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'delete', id: linkId, pin: currentPin })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to delete link');
+                    }
+                    const data = await response.json();
+                    alert(data.message);
+                    return true;
+                } catch (error) {
+                    console.error('Error deleting link:', error);
+                    alert('Failed to delete link: ' + error.message);
+                    return false;
+                }
+            }
 
             document.getElementById('close-link-manager').addEventListener('click', function() {
                 document.getElementById('link-manager').classList.add('hidden');
@@ -904,6 +916,7 @@
                 document.getElementById('new-link-url').value = '';
                 document.getElementById('announcement-message').value = '';
                 isPin0230Entered = false;
+                currentPin = null; // Clear the PIN
                 renderCustomLinks();
                 const deleteBtn = announcementBanner?.querySelector('.delete-btn');
                 if (deleteBtn) deleteBtn.style.display = 'none';
@@ -954,6 +967,10 @@
             contactSearchInput.addEventListener('input', debounce(searchContacts, 300));
 
             document.getElementById('upload-contacts').addEventListener('click', async () => {
+                if (!currentPin) {
+                    alert('PIN is required to upload contacts.');
+                    return;
+                }
                 const fileInput = document.getElementById('contacts-csv');
                 if (fileInput.files.length === 0) {
                     alert('Please select a CSV file to upload.');
@@ -973,11 +990,25 @@
                             phone3: row.phone3 || '',
                             category: row.category || ''
                         }));
-                        await updateContacts(newContacts);
-                        contacts = await fetchContacts();
-                        renderContacts(contacts);
-                        alert('Contacts updated successfully.');
-                        fileInput.value = ''; // Reset file input
+                        try {
+                            const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/update-contacts', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ newContacts, pin: currentPin })
+                            });
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(errorData.error || 'Failed to update contacts');
+                            }
+                            const data = await response.json();
+                            alert(data.message);
+                            contacts = await fetchContacts();
+                            renderContacts(contacts);
+                            fileInput.value = ''; // Reset file input
+                        } catch (error) {
+                            console.error('Error updating contacts:', error);
+                            alert('Failed to update contacts: ' + error.message);
+                        }
                     },
                     error: (error) => {
                         console.error('Error parsing CSV:', error);
