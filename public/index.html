@@ -15,9 +15,9 @@
             --text-color: #333333;
             --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --banner-bg: #ffcc00;
-            --banner-height: 50px; /* Define the height of the banner */
-            --banner-font-size: 1.3rem; /* Default font size for banner text */
-            --banner-font-weight: bold; /* Default font weight for banner text */
+            --banner-height: 50px;
+            --banner-font-size: 1.3rem;
+            --banner-font-weight: bold;
         }
     
         * {
@@ -39,7 +39,7 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding-top: var(--banner-height); /* Ensure content starts below the banner */
+            padding-top: var(--banner-height);
         }
     
         header {
@@ -67,7 +67,7 @@
             align-items: center;
             margin: 0 auto 15px;
             box-shadow: var(--shadow);
-            object-fit: contain; /* Ensure SVG scales properly */
+            object-fit: contain;
         }
     
         .card {
@@ -218,13 +218,13 @@
             width: 100%;
             border: 2px solid #ddd;
             border-radius: 5px;
-            flex-grow: 1; /* Make the input take up available space */
+            flex-grow: 1;
         }
     
         #contact-search-btn {
             padding: 10px 15px;
             font-size: 1rem;
-            min-width: 100px; /* Ensure the button doesn’t shrink too much */
+            min-width: 100px;
         }
     
         .back-button {
@@ -359,10 +359,10 @@
             align-items: center;
             z-index: 1000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            height: var(--banner-height); /* Set a fixed height */
-            line-height: normal; /* Ensure content aligns properly */
-            font-size: var(--banner-font-size); /* Use the new font size variable */
-            font-weight: var(--banner-font-weight); /* Use the new font weight variable */
+            height: var(--banner-height);
+            line-height: normal;
+            font-size: var(--banner-font-size);
+            font-weight: var(--banner-font-weight);
         }
     
         #announcement-banner .close-btn {
@@ -374,8 +374,8 @@
         #announcement-banner .message {
             flex-grow: 1;
             text-align: center;
-            font-size: var(--banner-font-size); /* Match the banner's font size */
-            font-weight: var(--banner-font-weight); /* Match the banner's font weight */
+            font-size: var(--banner-font-size);
+            font-weight: var(--banner-font-weight);
         }
     
         @media (max-width: 480px) {
@@ -402,7 +402,7 @@
             }
     
             #contact-search-btn {
-                width: 100%; /* Full width on small screens */
+                width: 100%;
             }
     
             #announcement-banner {
@@ -416,6 +416,7 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
@@ -431,15 +432,19 @@
         <div class="card">
             <div class="card-title"><i class="fas fa-users"></i>Tampa Team Contacts</div>
             <a href="#contacts" class="link-button" id="show-contacts">View Team Contacts</a>
+            <div id="quick-links-custom-tech"></div>
         </div>
+        
         <div class="card">
             <div class="card-title"><i class="fas fa-link"></i>Quick Links</div>
             <div id="quick-links-public">
                 <a href="https://drive.google.com/file/d/1TfuCapuk8uFtx4p1lYpK48ARtwWoqMXZ/view?usp=sharing" class="link-button" target="_blank">Mobiletech 35.1v</a>
                 <a href="https://form.jotform.com/242183915728160" class="link-button" target="_blank">Weekly Truck Inspection</a>
-            </div>
-            <div id="quick-links-custom-tech"></div>
-        </div>
+                <a href="https://form.jotform.com/243256016807152" class="link-button" target="_blank">Residential Quality Control Form</a>
+                <a href="https://smsgenerator.netlify.app/" class="link-button" target="_blank">SMS Generator</a>
+                <a href="https://form.jotform.com/250703894036054" class="link-button" target="_blank">Tablet Feeder Distribution</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScDetHDdC0mHgK-U04W2fFezUBZurbrG-jMdCflAhAdBYL9iw/viewform" class="link-button" target="_blank">Missed Routes</a>
+            </div></div>
         <div class="card">
             <div class="card-title"><i class="fas fa-lock"></i>Area Manager Section</div>
             <div class="pin-section">
@@ -447,11 +452,6 @@
                 <input type="password" id="pin-input" class="pin-input" maxlength="4" placeholder="Enter 4-digit PIN">
                 <button id="submit-pin" class="link-button">Submit</button>
                 <div id="protected-content" class="protected-links hidden">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScDetHDdC0mHgK-U04W2fFezUBZurbrG-jMdCflAhAdBYL9iw/viewform" class="link-button" target="_blank">Missed Routes</a>
-                    <a href="https://form.jotform.com/250336149850154" class="link-button" target="_blank">Pool Physicals</a>
-                    <a href="https://app.jotform.com/240716802997163" class="link-button" target="_blank">Residential Quality Control Form</a>
-                    <a href="https://smsgenerator.netlify.app/" class="link-button" target="_blank">SMS Generator</a>
-                    <a href="https://form.jotform.com/250703894036054" class="link-button" target="_blank">Tablet Feeder Distribution</a>
                     <div id="quick-links-custom-manager"></div>
                 </div>
                 <div id="pin-error" class="hidden" style="color: red; margin-top: 10px;">Incorrect PIN. Please try again.</div>
@@ -468,12 +468,11 @@
                 <h3>Post Announcement</h3>
                 <textarea id="announcement-message" placeholder="Enter announcement message"></textarea>
                 <button id="post-announcement">Post Announcement</button>
+                <h3>Upload Contacts CSV</h3>
+                <input type="file" id="contacts-csv" accept=".csv">
+                <button id="upload-contacts">Upload Contacts</button>
                 <button id="close-link-manager" class="close-button">Close</button>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-title"><i class="fas fa-bell"></i>Notifications</div>
-            <button id="enable-notifications" class="link-button">Enable Notifications</button>
         </div>
     </div>
     <div id="contacts-page" class="hidden">
@@ -490,148 +489,30 @@
     </div>
 
     <script>
-        // All contacts data
-        const contacts = [
-            {name: "AD Gonzalez", title: "President, CFO", org: "Pooltroopers", email: "adgonzalez@pooltroopers.com", phone: "+12487192631", category: "Senior/Office Staff"},
-            {name: "Alberto Hernandez", title: "TECTP404", org: "Pooltroopers", phone: "+18133621298", phone2: "+18137663779", category: "Tampa Routes"},
-            {name: "Alex Carpenter", title: "AMRTP3", org: "Pooltroopers", email: "acarpenter@pooltroopers.com", phone: "+18136246866", phone2: "+17329660421", category: "Tampa Managers"},
-            {name: "Andrew Mckee", title: "COMTPA", org: "Pooltroopers", email: "amckee@pooltroopers.com", phone: "+17406033642", phone2: "+18137583804", category: "Tampa Managers"},
-            {name: "Anthony Basilicato", title: "VP Training", org: "Pooltroopers", email: "abasilicato@pooltroopers.com", phone: "+18132355582", category: "Senior/Office Staff"},
-            {name: "Anthony Rosado", title: "TECTP203", org: "Pooltroopers", phone: "+18135380885", category: "Tampa Routes"},
-            {name: "Austin Neill", title: "MECTPA05", org: "Pooltroopers", email: "aneill@pooltroopers.com", phone: "+18139545581", category: "Mechanics"},
-            {name: "Camilo Garcia", title: "MECPNT01", org: "Pooltroopers", email: "jgarcia@pooltroopers.com", phone: "+18133739412", category: "Mechanics"},
-            {name: "Caria Polite", title: "TECTP303", org: "Pooltroopers", phone: "+18135770231", phone2: "+18134174751", category: "Tampa Routes"},
-            {name: "Cesar Portales Jr", title: "AMRTP5", org: "Pooltroopers", email: "cportales@pooltroopers.com", phone: "+18133096477", phone2: "+18133096477", category: "Tampa Managers"},
-            {name: "Cesar Zaragoza", title: "AMRTP1", org: "Pooltroopers", email: "czaragoza@pooltroopers.com", phone: "+18133098564", phone2: "+18137346049", category: "Tampa Managers"},
-            {name: "Chase Eubanks", title: "TECTP605", org: "Pooltroopers", phone: "+18139544261", category: "Tampa Routes"},
-            {name: "Chris Neatherly", title: "VP Operations", org: "Pooltroopers", phone: "+18133096487", category: "Senior/Office Staff"},
-            {name: "Christopher Thomas", title: "TECTP703", org: "Pooltroopers", phone: "+18137663704", category: "Tampa Routes"},
-            {name: "Duniel Benitez", title: "TECTP503", org: "Pooltroopers", phone: "+18137663748", category: "Tampa Routes"},
-            {name: "Ethan Kahle", title: "TECTP604", org: "Pooltroopers", phone: "+18134172702", category: "Tampa Routes"},
-            {name: "Frank Beesley-Damico", title: "TECTP202", org: "Pooltroopers", phone: "+18133251741", category: "Tampa Routes"},
-            {name: "Gage Berry", title: "MECTPA04", org: "Pooltroopers", email: "gberry@pooltroopers.com", phone: "+18134229562", phone2: "+17864617449", category: "Mechanics"},
-            {name: "Gavin Terhorst", title: "TECTP704", org: "Pooltroopers", phone: "+18134174566", category: "Tampa Routes"},
-            {name: "Hermes Araujo", title: "AMRTP2", org: "Pooltroopers", email: "haraujo@pooltroopers.com", phone: "+14012097820", phone2: "+18137663597", category: "Tampa Managers"},
-            {name: "Hunter Maclachlan", title: "TECTP304", org: "Pooltroopers", phone: "+18132948775", category: "Tampa Routes"},
-            {name: "Israel Vazquez", title: "TECTP102", org: "Pooltroopers", phone: "+18139544266", category: "Tampa Routes"},
-            {name: "Jason Sikes", title: "MECEHT03", org: "Pooltroopers", email: "jsikes@pooltroopers.com", phone: "+18139572403", category: "Mechanics"},
-            {name: "Jeremiah Sondgerath", title: "TECTP506", org: "Pooltroopers", phone: "+18137588297", category: "Tampa Routes"},
-            {name: "Jessica Felton", title: "Controller", org: "Pooltroopers", email: "jfelton@pooltroopers.com", phone: "+18138899091", category: "Senior/Office Staff"},
-            {name: "John King", title: "TECTP601", org: "Pooltroopers", phone: "+18137788865", phone2: "+18137663021", category: "Tampa Routes"},
-            {name: "Jonathan Montoya", title: "MECTPA06", org: "Pooltroopers", email: "jmontoya@pooltroopers.com", phone: "+18137663145", category: "Mechanics"},
-            {name: "Jorge Sotelo", title: "AMRTP6", org: "Pooltroopers", email: "jsotelo@pooltroopers.com", phone: "+18137663152", phone2: "+18135084509", category: "Tampa Managers"},
-            {name: "Jose Cruz", title: "AMRTP4", org: "Pooltroopers", email: "jcruz@pooltroopers.com", phone: "+18137601037", phone2: "+18137663534", category: "Tampa Managers"},
-            {name: "Jose Gonzalez", title: "VP IT", org: "Pooltroopers", phone: "+18133610458", category: "Senior/Office Staff"},
-            {name: "Jose Lora", title: "TECTPA09", org: "Pooltroopers", phone: "+18132782549", phone2: "+18133734545", phone3: "+18137663149", category: "Tampa Routes"},
-            {name: "Jose Soto", title: "AMRTP7", org: "Pooltroopers", email: "jsoto@pooltroopers.com", phone: "+18137437514", phone2: "+18137437514", category: "Tampa Managers"},
-            {name: "Jose Victores", title: "TECTP101", org: "Pooltroopers", phone: "+18133897686", phone2: "+18134549563", category: "Tampa Routes"},
-            {name: "Juan Lopez", title: "TECTP502", org: "Pooltroopers", phone: "+18133095368", category: "Tampa Routes"},
-            {name: "Justin Levy", title: "TECTP301", org: "Pooltroopers", phone: "+18133649730", phone2: "+18137662958", category: "Tampa Routes"},
-            {name: "Kevin Alexander", title: "TECTPA04", org: "Pooltroopers", phone: "+18132307083", category: "Senior/Office Staff"},
-            {name: "Lawrence Lavacca", title: "TECTP504", org: "Pooltroopers", phone: "+18133095663", category: "Tampa Routes"},
-            {name: "Ludwing Villamizar", title: "General Manager Tampa", org: "Pooltroopers", email: "lvillamizar@pooltroopers.com", phone: "+18139555576", phone2: "+18138621208", category: "General Manager"},
-            {name: "Mackeel Rodgers", title: "TECTP403", org: "Pooltroopers", phone: "+18137663754", category: "Tampa Routes"},
-            {name: "Michael Beeby", title: "TECTP201", org: "Pooltroopers", phone: "+18136253784", category: "Tampa Routes"},
-            {name: "Mike Zabrocki", title: "COO", org: "Pooltroopers", email: "mzabrocki@pooltroopers.com", phone: "+18133095929", category: "Senior/Office Staff"},
-            {name: "Osborne Nutt", title: "TECTP401", org: "Pooltroopers", phone: "+16562164270", category: "Tampa Routes"},
-            {name: "Patrick Krantzberg", title: "Branch Coordinator", org: "Pooltroopers", email: "pkrantzberg@pooltroopers.com", phone: "+18138170408", category: "Tampa Managers"},
-            {name: "Paul Melton", title: "TECTP702", org: "Pooltroopers", phone: "+18137663385", phone2: "+18137663794", category: "Tampa Routes"},
-            {name: "Rafael Nunez Marrero", title: "TECTP104", org: "Pooltroopers", phone: "+18137580676", category: "Tampa Routes"},
-            {name: "Randy Diaz", title: "TECTP103", org: "Pooltroopers", phone: "+18137702616", phone2: "+18139513232", category: "Tampa Routes"},
-            {name: "Ryan Marsh", title: "TECTP302", org: "Pooltroopers", phone: "+18137663799", category: "Tampa Routes"},
-            {name: "Sebastian Victores", title: "TECTP402", org: "Pooltroopers", phone: "+18134544129", category: "Tampa Routes"},
-            {name: "William Tucker", title: "TECTP603", org: "Pooltroopers", phone: "+18139041123", phone2: "+18132931141", category: "Tampa Routes"},
-            {name: "Xavier Molina", title: "TECTP505", org: "Pooltroopers", phone: "+18137663762", category: "Tampa Routes"},
-            {name: "Zaccari Burden", title: "TECTP701", org: "Pooltroopers", phone: "+18135647325", category: "Tampa Routes"},
-            {name: "Zahir Alma", title: "TECTP602", org: "Pooltroopers", phone: "+18134166316", category: "Tampa Routes"}
-        ];
-
-        // Valid PIN hashes (MD5 of 1178, 0564, 3024, 0602, 0105, 0212, 0278, 0230)
         const validPinHashes = [
-            '81dc9bdb52d04dc20036dbd8313ed055', // 1178
-            'b1d10e7bafa4421218a51b1e1f1b0ba', // 0564
-            'e7f6c011776e8db7cd330b54174fd76f', // 3024
-            'b5e275f4b37b2e15f56b2a7e4b64e8a', // 0602
-            'c4ca4238a0b923820dcc509a6f75849b', // 0105
-            'c81e728d9d4c2f636f067f89cc14862c', // 0212
-            'b3e3e393c77e35a4a3f3cbd1e429b5dc', // 0278
-            'c9e1074f5b3f9fc8ea15d152add07294'  // 0230
+            '81dc9bdb52d04dc20036dbd8313ed055',
+            'b1d10e7bafa4421218a51b1e1f1b0ba',
+            'e7f6c011776e8db7cd330b54174fd76f',
+            'b5e275f4b37b2e15f56b2a7e4b64e8a',
+            'c4ca4238a0b923820dcc509a6f75849b',
+            'c81e728d9d4c2f636f067f89cc14862c',
+            'b3e3e393c77e35a4a3f3cbd1e429b5dc',
+            'c9e1074f5b3f9fc8ea15d152add07294'
         ];
 
-        // Valid PINs (for fallback comparison)
         const validPins = ['1178', '0564', '3024', '0602', '0105', '0212', '0278', '0230'];
 
-        // Load custom links from Supabase
         let customLinks = [];
-
-        // Track whether the PIN 0230 has been entered
+        let contacts = [];
         let isPin0230Entered = false;
-
-        // Track whether a valid PIN has been entered
         let isValidPinEntered = false;
-
-        // Initialize Supabase client
         let supabase = null;
 
-        // Function to convert VAPID key to Uint8Array for push notifications
-        function urlBase64ToUint8Array(base64String) {
-            const padding = '='.repeat((4 - base64String.length % 4) % 4);
-            const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-            const rawData = atob(base64);
-            const outputArray = new Uint8Array(rawData.length);
-            for (let i = 0; i < rawData.length; ++i) {
-                outputArray[i] = rawData.charCodeAt(i);
-            }
-            return outputArray;
-        }
-
-        // Register service worker and subscribe to push notifications
-        async function setupPushNotifications() {
-            if ('serviceWorker' in navigator && 'PushManager' in window) {
-                try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
-                    console.log('Service Worker registered:', registration);
-
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        console.log('Notification permission granted');
-                        const applicationServerKey = urlBase64ToUint8Array('BOcA53xE9rvF9910WzV6tGmRWo0y3fDtTF8x84I14a2zJ5T5sK9d8yguP_uDVrhpdWGXTusJ8QvJx02PHyJLbbo');
-                        const subscription = await registration.pushManager.subscribe({
-                            userVisibleOnly: true,
-                            applicationServerKey: applicationServerKey,
-                        });
-
-                        const { error } = await supabase.from('push_subscriptions').insert({
-                            subscription: JSON.stringify(subscription),
-                        });
-                        if (error) {
-                            console.error('Error storing push subscription:', error.message);
-                        } else {
-                            console.log('Push subscription stored in Supabase');
-                        }
-                    } else {
-                        console.log('Notification permission denied');
-                    }
-                } catch (error) {
-                    console.error('Error setting up push notifications:', error);
-                }
-            } else {
-                console.log('Push notifications not supported in this browser');
-            }
-        }
-
-        // Function to fetch custom links from Supabase
         async function fetchCustomLinks() {
-            if (!supabase) {
-                console.error('Cannot fetch custom links: Supabase client is not initialized');
-                return [];
-            }
+            if (!supabase) return [];
             try {
-                const { data, error } = await supabase
-                    .from('custom_links')
-                    .select('*');
+                const { data, error } = await supabase.from('custom_links').select('*');
                 if (error) throw error;
-                console.log('Fetched custom links:', data);
                 return data || [];
             } catch (error) {
                 console.error('Error fetching custom links:', error.message);
@@ -639,16 +520,10 @@
             }
         }
 
-        // Function to save a new custom link to Supabase
         async function saveCustomLink(link) {
-            if (!supabase) {
-                console.error('Cannot save custom link: Supabase client is not initialized');
-                return;
-            }
+            if (!supabase) return;
             try {
-                const { error } = await supabase
-                    .from('custom_links')
-                    .insert([link]);
+                const { error } = await supabase.from('custom_links').insert([link]);
                 if (error) throw error;
                 console.log('Custom link saved successfully');
             } catch (error) {
@@ -657,18 +532,13 @@
             }
         }
 
-        // Function to delete a custom link from Supabase
         async function deleteCustomLink(linkId) {
             if (!supabase) {
-                console.error('Cannot delete custom link: Supabase client is not initialized');
                 alert('Cannot delete link: Database connection is unavailable.');
                 return false;
             }
             try {
-                const { error } = await supabase
-                    .from('custom_links')
-                    .delete()
-                    .eq('id', linkId);
+                const { error } = await supabase.from('custom_links').delete().eq('id', linkId);
                 if (error) throw error;
                 console.log(`Custom link with ID ${linkId} deleted successfully`);
                 return true;
@@ -679,32 +549,47 @@
             }
         }
 
-        // Function to render custom links
+        async function fetchContacts() {
+            if (!supabase) return [];
+            try {
+                const { data, error } = await supabase.from('contacts').select('*');
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('Error fetching contacts:', error.message);
+                return [];
+            }
+        }
+
+        async function updateContacts(newContacts) {
+            if (!supabase) return;
+            try {
+                await supabase.from('contacts').delete().neq('id', 0);
+                const { error } = await supabase.from('contacts').insert(newContacts);
+                if (error) throw error;
+                console.log('Contacts updated successfully');
+            } catch (error) {
+                console.error('Error updating contacts:', error.message);
+                alert('Failed to update contacts: ' + error.message);
+            }
+        }
+
         function renderCustomLinks() {
             const techContainer = document.getElementById('quick-links-custom-tech');
             const managerContainer = document.getElementById('quick-links-custom-manager');
-            if (!techContainer || !managerContainer) {
-                console.error('Custom links containers not found in DOM');
-                return;
-            }
+            if (!techContainer || !managerContainer) return;
             techContainer.innerHTML = '';
             managerContainer.innerHTML = '';
-            console.log('renderCustomLinks called with customLinks:', customLinks);
-            if (!Array.isArray(customLinks) || customLinks.length === 0) {
-                console.warn('No custom links to render');
-                return;
-            }
-            customLinks.forEach((link, index) => {
+            if (!Array.isArray(customLinks) || customLinks.length === 0) return;
+            customLinks.forEach(link => {
                 const linkElement = document.createElement('div');
                 linkElement.className = 'custom-link';
-
                 const linkButton = document.createElement('a');
                 linkButton.href = link.url;
                 linkButton.className = 'link-button';
                 linkButton.target = '_blank';
                 linkButton.textContent = link.title;
                 linkElement.appendChild(linkButton);
-
                 if (isPin0230Entered) {
                     const deleteButton = document.createElement('button');
                     deleteButton.className = 'delete-button';
@@ -718,41 +603,31 @@
                     };
                     linkElement.appendChild(deleteButton);
                 }
-
                 if (link.type === 'tech') {
                     techContainer.appendChild(linkElement);
-                    console.log(`Rendered tech link: ${link.title}`);
                 } else if (link.type === 'manager' && isValidPinEntered) {
                     managerContainer.appendChild(linkElement);
-                    console.log(`Rendered manager link: ${link.title}`);
                 }
             });
-            console.log('Custom links rendering completed');
         }
 
-        // Function to create contact cards
         function createContactCard(contact) {
             const card = document.createElement('div');
             card.className = 'contact-card';
-
             const nameEl = document.createElement('div');
             nameEl.className = 'contact-name';
-            nameEl.textContent = contact.name;
+            nameEl.textContent = contact.name || 'Unnamed';
             card.appendChild(nameEl);
-
             const titleEl = document.createElement('div');
             titleEl.className = 'contact-title';
-            titleEl.textContent = `${contact.title} - ${contact.org}`;
+            titleEl.textContent = `${contact.title || ''} - ${contact.org || ''}`.trim() || 'No title or organization';
             card.appendChild(titleEl);
-
             const categoryEl = document.createElement('div');
             categoryEl.className = 'contact-category';
-            categoryEl.textContent = contact.category;
+            categoryEl.textContent = contact.category || 'Uncategorized';
             card.appendChild(categoryEl);
-
             const contactLinks = document.createElement('div');
             contactLinks.className = 'contact-links';
-
             if (contact.phone) {
                 const phoneNumber = contact.phone.replace(/[^0-9+]/g, '');
                 if (phoneNumber.length >= 10) {
@@ -760,44 +635,37 @@
                     textBtn.href = `sms:${phoneNumber}`;
                     textBtn.className = 'text-button';
                     textBtn.innerHTML = '<i class="fas fa-comment"></i> Text';
-                    textBtn.setAttribute('aria-label', `Send text to ${contact.name}`);
+                    textBtn.setAttribute('aria-label', `Send text to ${contact.name || 'contact'}`);
                     contactLinks.appendChild(textBtn);
-                    
                     const callBtn = document.createElement('a');
                     callBtn.href = `tel:${phoneNumber}`;
                     callBtn.className = 'call-button';
                     callBtn.innerHTML = '<i class="fas fa-phone"></i> Call';
-                    callBtn.setAttribute('aria-label', `Call ${contact.name}`);
+                    callBtn.setAttribute('aria-label', `Call ${contact.name || 'contact'}`);
                     contactLinks.appendChild(callBtn);
                 }
             }
-
             if (contact.email) {
                 const emailBtn = document.createElement('a');
                 emailBtn.href = `mailto:${contact.email}`;
                 emailBtn.className = 'email-button';
                 emailBtn.innerHTML = '<i class="fas fa-envelope"></i> Email';
-                emailBtn.setAttribute('aria-label', `Email ${contact.name}`);
+                emailBtn.setAttribute('aria-label', `Email ${contact.name || 'contact'}`);
                 contactLinks.appendChild(emailBtn);
             }
-
             card.appendChild(contactLinks);
             return card;
         }
 
-        // Render contacts list
         function renderContacts(contactsList) {
             const container = document.getElementById('contacts-container');
             container.innerHTML = '<div class="loading">Loading contacts...</div>';
-            
             setTimeout(() => {
                 container.innerHTML = '';
-                
                 if (!contactsList || contactsList.length === 0) {
                     container.innerHTML = '<p style="text-align:center; padding:20px;">No contacts match your search. Try a different term.</p>';
                     return;
                 }
-
                 contactsList.sort((a, b) => {
                     const categoryA = a.category || '';
                     const categoryB = b.category || '';
@@ -808,9 +676,7 @@
                     }
                     return categoryA.localeCompare(categoryB);
                 });
-
                 let currentCategory = '';
-                
                 contactsList.forEach(contact => {
                     const category = contact.category || 'Uncategorized';
                     if (category !== currentCategory) {
@@ -823,14 +689,12 @@
                         categoryHeader.style.paddingBottom = '5px';
                         container.appendChild(categoryHeader);
                     }
-
                     const card = createContactCard(contact);
                     container.appendChild(card);
                 });
             }, 100);
         }
 
-        // Debounce function
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -843,17 +707,12 @@
             };
         }
 
-        // Announcement-related functions
         const announcementBanner = document.getElementById('announcement-banner');
         const announcementMessage = announcementBanner?.querySelector('.message');
         const closeBtn = announcementBanner?.querySelector('.close-btn');
 
-        // Fetch the latest active announcement
         async function fetchLatestAnnouncement() {
-            if (!supabase) {
-                console.error('Cannot fetch announcement: Supabase client is not initialized');
-                return null;
-            }
+            if (!supabase) return null;
             try {
                 const { data, error } = await supabase
                     .from('announcements')
@@ -862,7 +721,6 @@
                     .order('created_at', { ascending: false })
                     .limit(1);
                 if (error) throw error;
-                console.log('Fetched latest announcement:', data);
                 return data[0] || null;
             } catch (error) {
                 console.error('Error fetching announcement:', error.message);
@@ -870,10 +728,8 @@
             }
         }
 
-        // Function to delete an announcement from Supabase
         async function deleteAnnouncement(announcementId) {
             if (!supabase) {
-                console.error('Cannot delete announcement: Supabase client is not initialized');
                 alert('Cannot delete announcement: Database connection is unavailable.');
                 return false;
             }
@@ -892,18 +748,12 @@
             }
         }
 
-        // Show the announcement banner
         function showAnnouncement(message, id) {
-            if (!announcementBanner || !announcementMessage) {
-                console.error('Announcement banner or message element not found in DOM');
-                return;
-            }
-            console.log('showAnnouncement called with:', { message, id });
+            if (!announcementBanner || !announcementMessage) return;
             const dismissedId = localStorage.getItem('dismissedAnnouncementId');
             if (dismissedId !== id.toString()) {
                 announcementMessage.textContent = message || 'No message content';
                 announcementBanner.setAttribute('data-id', id);
-
                 let deleteBtn = announcementBanner.querySelector('.delete-btn');
                 if (!deleteBtn) {
                     deleteBtn = document.createElement('span');
@@ -926,71 +776,49 @@
                         }
                     }
                 };
-
                 announcementBanner.classList.remove('hidden');
-                console.log('Announcement displayed:', message);
-            } else {
-                console.log('Announcement skipped (already dismissed):', id);
             }
         }
 
-        // Dismiss the announcement
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
                 const currentAnnouncementId = announcementBanner.getAttribute('data-id');
                 if (currentAnnouncementId) {
                     localStorage.setItem('dismissedAnnouncementId', currentAnnouncementId);
                     announcementBanner.classList.add('hidden');
-                    console.log('Announcement dismissed:', currentAnnouncementId);
                 }
             });
         }
 
-        // Initialize page and attach event listeners
         document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize Supabase client
             try {
-                console.log('Initializing Supabase client');
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error('Supabase library not loaded');
-                }
+                if (typeof window.supabase === 'undefined') throw new Error('Supabase library not loaded');
                 const supabaseUrl = 'https://adbavqpqvxoidcuyophr.supabase.co';
                 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkYmF2cXBxdnhvaWRjdXlvcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTExNTksImV4cCI6MjA2MTQ2NzE1OX0.gI4qMCjbvoPh1Y5MR1eqv0hRvA_YPYaifDCU2n-G1_Q';
                 supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-                console.log('Supabase client initialized');
             } catch (error) {
                 console.error('Supabase initialization failed:', error.message);
                 supabase = null;
                 alert('Database connection failed. Some features may not work.');
             }
 
-            // Fetch and render data
             if (supabase) {
                 customLinks = await fetchCustomLinks();
+                contacts = await fetchContacts();
                 renderCustomLinks();
-
                 const latestAnnouncement = await fetchLatestAnnouncement();
-                if (latestAnnouncement) {
-                    showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                }
+                if (latestAnnouncement) showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
             }
 
-            // Post a new announcement
             document.getElementById('post-announcement').addEventListener('click', async () => {
-                console.log('Posting new announcement');
                 const message = document.getElementById('announcement-message').value.trim();
                 if (message && supabase) {
                     try {
-                        const { error } = await supabase
-                            .from('announcements')
-                            .insert([{ message, is_active: true }]);
+                        const { error } = await supabase.from('announcements').insert([{ message, is_active: true }]);
                         if (error) throw error;
-                        console.log('Announcement posted');
                         document.getElementById('announcement-message').value = '';
                         const latestAnnouncement = await fetchLatestAnnouncement();
-                        if (latestAnnouncement) {
-                            showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
-                        }
+                        if (latestAnnouncement) showAnnouncement(latestAnnouncement.message, latestAnnouncement.id);
                     } catch (error) {
                         console.error('Error posting announcement:', error.message);
                         alert('Failed to post announcement: ' + error.message);
@@ -1000,62 +828,30 @@
                 }
             });
 
-            // Real-time subscription for announcements with push notification trigger
             if (supabase) {
-                supabase
-                    .channel('announcements')
-                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, async (payload) => {
-                        console.log('Real-time announcement received:', payload.new);
-                        const newAnnouncement = payload.new;
-                        if (newAnnouncement.is_active) {
-                            showAnnouncement(newAnnouncement.message, newAnnouncement.id);
-                            try {
-                                const response = await fetch('https://adbavqpqvxoidcuyophr.supabase.co/functions/v1/send-push-notification', {
-                                    method: 'POST',
-                                    body: JSON.stringify({ record: newAnnouncement }),
-                                    headers: { 'Content-Type': 'application/json' },
-                                });
-                                console.log('Edge Function response:', await response.text());
-                            } catch (error) {
-                                console.error('Error triggering push notification:', error);
-                            }
-                        }
-                    })
-                    .subscribe((status) => {
-                        console.log('Subscription status:', status);
-                    });
+                supabase.channel('announcements').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'announcements' }, (payload) => {
+                    const newAnnouncement = payload.new;
+                    if (newAnnouncement.is_active) showAnnouncement(newAnnouncement.message, newAnnouncement.id);
+                }).subscribe((status) => console.log('Subscription status:', status));
             }
 
-            // Real-time subscription for custom_links
             if (supabase) {
-                supabase
-                    .channel('custom_links')
-                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'custom_links' }, async (payload) => {
-                        console.log('Real-time custom link added:', payload.new);
-                        customLinks = await fetchCustomLinks();
-                        renderCustomLinks();
-                    })
-                    .subscribe((status) => {
-                        console.log('Custom links subscription status:', status);
-                    });
+                supabase.channel('custom_links').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'custom_links' }, async () => {
+                    customLinks = await fetchCustomLinks();
+                    renderCustomLinks();
+                شهيدة
+                }).subscribe((status) => console.log('Custom links subscription status:', status));
             }
 
-            // Enable notifications button
-            document.getElementById('enable-notifications').addEventListener('click', setupPushNotifications);
-
-            // PIN functionality
             document.getElementById('pin-input').addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
             });
 
             document.getElementById('pin-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    document.getElementById('submit-pin').click();
-                }
+                if (e.key === 'Enter') document.getElementById('submit-pin').click();
             });
 
             document.getElementById('submit-pin').addEventListener('click', function() {
-                console.log('PIN submitted');
                 const pin = document.getElementById('pin-input').value;
                 const pinHash = md5(pin);
                 if (validPinHashes.includes(pinHash) || validPins.includes(pin)) {
@@ -1067,9 +863,7 @@
                     if (pin === '0230') {
                         document.getElementById('link-manager').classList.remove('hidden');
                         const deleteBtn = announcementBanner?.querySelector('.delete-btn');
-                        if (deleteBtn) {
-                            deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
-                        }
+                        if (deleteBtn) deleteBtn.style.display = isPin0230Entered ? 'inline' : 'none';
                     }
                 } else {
                     document.getElementById('pin-error').classList.remove('hidden');
@@ -1080,15 +874,11 @@
                     document.getElementById('pin-input').value = '';
                     renderCustomLinks();
                     const deleteBtn = announcementBanner?.querySelector('.delete-btn');
-                    if (deleteBtn) {
-                        deleteBtn.style.display = 'none';
-                    }
+                    if (deleteBtn) deleteBtn.style.display = 'none';
                 }
             });
 
-            // Add new link
             document.getElementById('add-link').addEventListener('click', async function() {
-                console.log('Adding new link');
                 const title = document.getElementById('new-link-title').value.trim();
                 const url = document.getElementById('new-link-url').value.trim();
                 const type = document.getElementById('new-link-type').value;
@@ -1108,7 +898,6 @@
                 }
             });
 
-            // Close link manager
             document.getElementById('close-link-manager').addEventListener('click', function() {
                 document.getElementById('link-manager').classList.add('hidden');
                 document.getElementById('new-link-title').value = '';
@@ -1117,12 +906,9 @@
                 isPin0230Entered = false;
                 renderCustomLinks();
                 const deleteBtn = announcementBanner?.querySelector('.delete-btn');
-                if (deleteBtn) {
-                    deleteBtn.style.display = 'none';
-                }
+                if (deleteBtn) deleteBtn.style.display = 'none';
             });
 
-            // Contacts page functionality
             document.getElementById('show-contacts').addEventListener('click', function(e) {
                 e.preventDefault();
                 document.getElementById('main-page').style.display = 'none';
@@ -1142,7 +928,6 @@
                 document.getElementById('main-page').style.display = 'block';
             });
 
-            // Search functionality for contacts
             const contactSearchInput = document.getElementById('contact-search');
             const contactSearchBtn = document.getElementById('contact-search-btn');
 
@@ -1160,18 +945,46 @@
                 renderContacts(filteredContacts);
             }
 
-            // Trigger search on button click
             contactSearchBtn.addEventListener('click', searchContacts);
 
-            // Trigger search on Enter key press
             contactSearchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    searchContacts();
-                }
+                if (e.key === 'Enter') searchContacts();
             });
 
-            // Live search as the user types
             contactSearchInput.addEventListener('input', debounce(searchContacts, 300));
+
+            document.getElementById('upload-contacts').addEventListener('click', async () => {
+                const fileInput = document.getElementById('contacts-csv');
+                if (fileInput.files.length === 0) {
+                    alert('Please select a CSV file to upload.');
+                    return;
+                }
+                const file = fileInput.files[0];
+                Papa.parse(file, {
+                    header: true,
+                    complete: async (results) => {
+                        const newContacts = results.data.map(row => ({
+                            name: row.name || '',
+                            title: row.title || '',
+                            org: row.org || '',
+                            email: row.email || '',
+                            phone: row.phone || '',
+                            phone2: row.phone2 || '',
+                            phone3: row.phone3 || '',
+                            category: row.category || ''
+                        }));
+                        await updateContacts(newContacts);
+                        contacts = await fetchContacts();
+                        renderContacts(contacts);
+                        alert('Contacts updated successfully.');
+                        fileInput.value = ''; // Reset file input
+                    },
+                    error: (error) => {
+                        console.error('Error parsing CSV:', error);
+                        alert('Failed to parse CSV file. Please ensure it’s correctly formatted.');
+                    }
+                });
+            });
         });
     </script>
 </body>
